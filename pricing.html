@@ -65,6 +65,17 @@
     .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 2px; background: var(--amber); transition: width 0.25s ease; }
     .nav-links a:hover::after { width: 100%; }
     .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active { color: var(--ink); }
+.nav-links a.active::after { width: 100%; }
+.nav-links a.btn {
+  padding: 13px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.nav-links a.btn::after { display: none; }
+.nav-cta { display: flex; align-items: center; gap: 18px; }
     .nav-links a.current { color: var(--ink); }
     .nav-links a.current::after { width: 100%; }
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; -webkit-tap-highlight-color: transparent; z-index: 60; }
@@ -293,8 +304,8 @@
       <h1>Rates quoted straight,<br /><em>no fine print to hunt for.</em></h1>
       <p class="sub">Every lease is priced up front by term length and asset category. No mileage traps, no usage penalties, no callback required to get a number. What you're quoted is what you pay.</p>
       <div class="phero-actions">
-        <a href="#tiers" class="btn btn-primary">See the plans</a>
-        <a href="#rates" class="btn btn-outline on-dark">View category rates</a>
+        <a href="404.html" class="btn btn-primary">See the plans</a>
+        <a href="404.html" class="btn btn-outline on-dark">View category rates</a>
       </div>
     </div>
     <div class="quote-mini" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
@@ -362,7 +373,7 @@
           <li class="feat">Swap units anytime</li>
           <li class="feat">No credit application required</li>
         </ul>
-        <a href="#footer" class="btn btn-outline">Get a quote</a>
+        <a href="404.html" class="btn btn-outline">Get a quote</a>
       </div>
       <div class="price-card featured" data-aos="zoom-in" data-aos-delay="100">
         <span class="badge-popular">Most common</span>
@@ -375,7 +386,7 @@
           <li class="feat">Free unit upgrades on demand spikes</li>
           <li class="feat">Dedicated account manager</li>
         </ul>
-        <a href="#footer" class="btn btn-primary">Get a quote</a>
+        <a href="404.html" class="btn btn-primary">Get a quote</a>
       </div>
       <div class="price-card" data-aos="fade-up" data-aos-delay="200">
         <span class="plan-name">Long-Term Lease</span>
@@ -387,7 +398,7 @@
           <li class="feat">Guaranteed replacement SLA</li>
           <li class="feat">Buyout option at term end</li>
         </ul>
-        <a href="#footer" class="btn btn-outline">Talk to sales</a>
+        <a href="404.html" class="btn btn-outline">Talk to sales</a>
       </div>
     </div>
   </div>
@@ -576,8 +587,8 @@
         <p>Get a live quote in minutes, or talk to a specialist about volume pricing.</p>
       </div>
       <div style="display:flex; gap:14px; flex-wrap:wrap;">
-        <a href="inventory.html" class="btn btn-primary">Browse the fleet</a>
-        <a href="#footer" class="btn btn-outline on-dark">Talk to sales</a>
+        <a href="404.html" class="btn btn-primary">Browse the fleet</a>
+        <a href="404.html" class="btn btn-outline on-dark">Talk to sales</a>
       </div>
     </div>
   </div>

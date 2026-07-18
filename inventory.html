@@ -129,6 +129,17 @@
     .nav-links a:hover::after { width: 100%; }
     .nav-links a:hover { color: var(--ink); }
     .nav-links a.active { color: var(--ink); }
+.nav-links a.active::after { width: 100%; }
+.nav-links a.btn {
+  padding: 13px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.nav-links a.btn::after { display: none; }
+.nav-cta { display: flex; align-items: center; gap: 18px; }
+    .nav-links a.active { color: var(--ink); }
     .nav-links a.active::after { width: 100%; }
     .nav-cta { display: flex; align-items: center; gap: 18px; }
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; -webkit-tap-highlight-color: transparent; z-index: 60; }

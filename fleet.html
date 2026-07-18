@@ -26,6 +26,8 @@
       --display: 'Space Grotesk', sans-serif;
       --body: 'Inter', sans-serif;
       --mono: 'IBM Plex Mono', monospace;
+      --header-h: 83px;   /* fallback, overwritten by JS on load/resize */
+      --subnav-h: 47px;   /* fallback, overwritten by JS on load/resize */
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -129,6 +131,17 @@
     .nav-links a:hover::after { width: 100%; }
     .nav-links a:hover { color: var(--ink); }
     .nav-links a.active { color: var(--ink); }
+.nav-links a.active::after { width: 100%; }
+.nav-links a.btn {
+  padding: 13px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.nav-links a.btn::after { display: none; }
+.nav-cta { display: flex; align-items: center; gap: 18px; }
+    .nav-links a.active { color: var(--ink); }
     .nav-links a.active::after { width: 100%; }
     .nav-cta { display: flex; align-items: center; gap: 18px; }
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; -webkit-tap-highlight-color: transparent; z-index: 60; }
@@ -191,7 +204,7 @@
     /* ----- STICKY SUBNAV ----- */
     .subnav {
       position: sticky;
-      top: 83px;
+      top: var(--header-h, 83px);   /* FIX: was hardcoded 83px, now tracks real header height */
       z-index: 40;
       background: var(--ink);
       border-bottom: 1px solid var(--line-light);
@@ -216,7 +229,10 @@
     .stat-label { font-family: var(--mono); font-size: 11.5px; color: #A9AFBB; margin-top: 6px; letter-spacing: 0.02em; }
 
     /* ----- SECTIONS ----- */
-    .section { padding: 68px 0; scroll-margin-top: 140px; }
+    .section {
+      padding: 68px 0;
+      scroll-margin-top: calc(var(--header-h, 83px) + var(--subnav-h, 47px) + 10px); /* FIX: was hardcoded 140px */
+    }
     @media (min-width: 640px) { .section { padding: 88px 0; } }
     .section.alt { background: var(--paper-dim); }
     .section-head { max-width: 680px; margin-bottom: 40px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
@@ -805,6 +821,26 @@
 
 <script>
   (function() {
+    // FIX: keep the sticky subnav flush under the header at any screen size,
+    // and keep anchor-scroll offset (scroll-margin-top) accurate too.
+    function syncStickyOffsets() {
+      var header = document.querySelector('header');
+      var subnav = document.querySelector('.subnav');
+      if (header) {
+        document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+      }
+      if (subnav) {
+        document.documentElement.style.setProperty('--subnav-h', subnav.offsetHeight + 'px');
+      }
+    }
+    syncStickyOffsets();
+    window.addEventListener('load', syncStickyOffsets);
+    window.addEventListener('resize', syncStickyOffsets);
+    // Fonts loading late can change header height slightly — re-check once fonts settle.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncStickyOffsets);
+    }
+
     // AOS
     var items = document.querySelectorAll('[data-aos]');
     items.forEach(function(el) {

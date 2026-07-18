@@ -65,6 +65,17 @@
     .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 2px; background: var(--amber); transition: width 0.25s ease; }
     .nav-links a:hover::after { width: 100%; }
     .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active { color: var(--ink); }
+.nav-links a.active::after { width: 100%; }
+.nav-links a.btn {
+  padding: 13px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.nav-links a.btn::after { display: none; }
+.nav-cta { display: flex; align-items: center; gap: 18px; }
     .nav-links a.current { color: var(--ink); }
     .nav-links a.current::after { width: 100%; }
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; -webkit-tap-highlight-color: transparent; z-index: 60; }
@@ -304,8 +315,8 @@
       <h1>Four checkpoints,<br /><em>one asset, no guesswork.</em></h1>
       <p class="sub">Every lease on Ironline — a single skid steer or a fifty-vehicle fleet — moves through the same reserve, deliver, operate, and return cycle. Here's exactly what happens at each stage, and who's responsible for what.</p>
       <div class="phero-actions">
-        <a href="#timeline" class="btn btn-primary">See the full process</a>
-        <a href="#faq" class="btn btn-outline on-dark">Jump to FAQ</a>
+        <a href="404.html" class="btn btn-primary">See the full process</a>
+        <a href="404.html" class="btn btn-outline on-dark">Jump to FAQ</a>
       </div>
     </div>
     <div class="rail" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
@@ -536,19 +547,19 @@
       <div class="dash-body">
         <div class="dash-row">
           <div><div class="dash-asset">Mobile Office Trailer, 32ft</div><div class="dash-meta">Term ends in 6 days</div></div>
-          <a href="#" class="dash-action">Renew</a>
+          <a href="404.html" class="dash-action">Renew</a>
         </div>
         <div class="dash-row">
           <div><div class="dash-asset">Cargo Van, Transit 250</div><div class="dash-meta">Term ends in 22 days</div></div>
-          <a href="#" class="dash-action">Swap</a>
+          <a href="404.html" class="dash-action">Swap</a>
         </div>
         <div class="dash-row">
           <div><div class="dash-asset">Telehandler, TH-360</div><div class="dash-meta">Term ends in 41 days</div></div>
-          <a href="#" class="dash-action">Manage</a>
+          <a href="404.html" class="dash-action">Manage</a>
         </div>
         <div class="dash-row">
           <div><div class="dash-asset">Mini Excavator, EX-80</div><div class="dash-meta">Return scheduled 7/29</div></div>
-          <a href="#" class="dash-action">View</a>
+          <a href="404.html" class="dash-action">View</a>
         </div>
       </div>
     </div>
@@ -620,8 +631,8 @@
         <p>Browse live inventory or talk to a specialist about matching a term to your project.</p>
       </div>
       <div style="display:flex; gap:14px; flex-wrap:wrap;">
-        <a href="inventory.html" class="btn btn-primary">Browse the fleet</a>
-        <a href="#footer" class="btn btn-outline on-dark">Talk to a specialist</a>
+        <a href="404.html" class="btn btn-primary">Browse the fleet</a>
+        <a href="404.html" class="btn btn-outline on-dark">Talk to a specialist</a>
       </div>
     </div>
   </div>
