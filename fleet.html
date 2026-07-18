@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fleet — Ironline Equipment & Vehicle Rental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ----- RESET & VARIABLES (shared with index.html) ----- */
+    :root {
+      --ink: #1B2430;
+      --ink-soft: #2B3646;
+      --steel: #3D5A73;
+      --paper: #F2EFE9;
+      --paper-dim: #E8E3D8;
+      --amber: #E8A33D;
+      --amber-dim: #C6862A;
+      --slate: #6B7280;
+      --green: #4A7A5C;
+      --red: #B0492F;
+      --line: rgba(27, 36, 48, 0.14);
+      --line-light: rgba(242, 239, 233, 0.16);
+      --display: 'Space Grotesk', sans-serif;
+      --body: 'Inter', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4 { font-family: var(--display); letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-dim);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 3px;
+      font-weight: 600;
+      font-size: 14.5px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--amber); color: var(--ink); }
+    .btn-primary:hover { background: var(--amber-dim); box-shadow: 0 8px 20px -6px rgba(232, 163, 61, 0.55); }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .btn-primary:hover::after { left: 130%; }
+    .btn-outline { border-color: var(--line); color: var(--ink); background: transparent; }
+    .btn-outline:hover { border-color: var(--ink); }
+    .btn-outline.on-dark { border-color: var(--line-light); color: var(--paper); }
+    .btn-outline.on-dark:hover { border-color: var(--paper); }
+    .btn-sm { padding: 9px 16px; font-size: 12.5px; }
+
+    /* ----- AOS ANIMATION ENGINE ----- */
+    [data-aos] {
+      opacity: 0;
+      transition-property: opacity, transform;
+      transition-duration: var(--aos-duration, 600ms);
+      transition-delay: var(--aos-delay, 0ms);
+      transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    [data-aos="fade-up"] { transform: translateY(28px); }
+    [data-aos="fade-down"] { transform: translateY(-28px); }
+    [data-aos="fade-right"] { transform: translateX(-32px); }
+    [data-aos="fade-left"] { transform: translateX(32px); }
+    [data-aos="zoom-in"] { transform: scale(0.92); }
+    [data-aos].aos-in { opacity: 1; transform: translate(0, 0) scale(1); }
+    @media (prefers-reduced-motion: reduce) {
+      [data-aos] { transition-duration: 1ms !important; transform: none !important; opacity: 1 !important; }
+    }
+
+    /* ----- HEADER ----- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: white;
+      border-bottom: 1px solid var(--line);
+      animation: headerDrop 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes headerDrop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .logo { display: flex; align-items: center; cursor: pointer; }
+    .logo img { height: 54px; width: auto; display: block; transition: transform 0.25s ease; }
+    .logo:hover img { transform: rotate(-3deg) scale(1.04); }
+    .nav-links { display: flex; gap: 34px; align-items: center; }
+    .nav-links a { font-size: 14.5px; font-weight: 500; color: var(--ink-soft); position: relative; padding-bottom: 3px; }
+    .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 2px; background: var(--amber); transition: width 0.25s ease; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active { color: var(--ink); }
+    .nav-links a.active::after { width: 100%; }
+    .nav-cta { display: flex; align-items: center; gap: 18px; }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; -webkit-tap-highlight-color: transparent; z-index: 60; }
+    .menu-toggle svg { display: block; }
+    .menu-toggle svg rect { transition: transform 0.3s ease, opacity 0.3s ease; transform-origin: center; }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(2) { opacity: 0; }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 840px) {
+      .nav-cta { display: none; }
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh;
+        background: var(--paper); padding: 0 24px; margin: 0; opacity: 0; pointer-events: none;
+        visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 55; overflow-y: auto;
+      }
+      .nav-links.open { opacity: 1; pointer-events: auto; visibility: visible; }
+      .nav-links a {
+        font-size: 22px; font-weight: 600; padding: 18px 0; width: 100%; text-align: center;
+        border-bottom: 1px solid var(--line); color: var(--ink);
+        transition: color 0.2s, transform 0.4s ease, opacity 0.4s ease; transform: translateY(14px); opacity: 0;
+      }
+      .nav-links.open a { transform: translateY(0); opacity: 1; }
+      .nav-links.open a:nth-child(1) { transition-delay: 0.05s; }
+      .nav-links.open a:nth-child(2) { transition-delay: 0.1s; }
+      .nav-links.open a:nth-child(3) { transition-delay: 0.15s; }
+      .nav-links.open a:nth-child(4) { transition-delay: 0.2s; }
+      .nav-links.open a:nth-child(5) { transition-delay: 0.25s; }
+      .nav-links.open a:nth-child(6) { transition-delay: 0.3s; }
+      .nav-links.open a:nth-child(7) { transition-delay: 0.35s; }
+      .nav-links a:last-of-type { border-bottom: none; }
+      .nav-links a:hover { color: var(--amber); }
+      .mobile-only-cta { display: block; margin-top: 24px; width: auto; text-align: center; }
+      .mobile-only-cta.btn { font-size: 18px; padding: 14px 44px; }
+    }
+
+    /* ----- PAGE HERO ----- */
+    .page-hero {
+      padding: 56px 0 48px;
+      background-image: url('https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: rgba(27, 36, 48, 0.62); z-index: -1; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 18px; }
+    .breadcrumb a:hover { color: var(--amber); }
+    .page-hero h1 { font-size: clamp(30px, 7vw, 50px); color: #fff; line-height: 1.08; margin-bottom: 16px; max-width: 680px; }
+    .page-hero h1 em { font-style: normal; color: var(--amber); }
+    .page-hero p.sub { font-size: clamp(15px, 2.4vw, 17px); color: rgba(255,255,255,0.85); max-width: 560px; margin-bottom: 28px; }
+    .hero-quick-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+    .qs-item { font-family: var(--mono); }
+    .qs-num { font-family: var(--display); font-size: 22px; color: var(--amber); font-weight: 600; }
+    .qs-label { font-size: 11px; color: rgba(255,255,255,0.65); letter-spacing: 0.04em; text-transform: uppercase; }
+
+    /* ----- STICKY SUBNAV ----- */
+    .subnav {
+      position: sticky;
+      top: 83px;
+      z-index: 40;
+      background: var(--ink);
+      border-bottom: 1px solid var(--line-light);
+    }
+    .subnav-inner {
+      max-width: 1180px; margin: 0 auto; padding: 0 32px;
+      display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+    }
+    .subnav-inner::-webkit-scrollbar { display: none; }
+    .subnav a {
+      font-family: var(--mono); font-size: 12.5px; color: #A9AFBB; white-space: nowrap;
+      padding: 15px 16px; border-bottom: 2px solid transparent; transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .subnav a:hover { color: var(--paper); }
+    .subnav a.active { color: var(--amber); border-color: var(--amber); }
+
+    /* ----- STATS BAND ----- */
+    .stats { background: var(--ink); color: var(--paper); padding: 40px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    @media (max-width: 800px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-num { font-family: var(--display); font-size: clamp(24px, 7vw, 36px); font-weight: 600; color: var(--amber); }
+    .stat-label { font-family: var(--mono); font-size: 11.5px; color: #A9AFBB; margin-top: 6px; letter-spacing: 0.02em; }
+
+    /* ----- SECTIONS ----- */
+    .section { padding: 68px 0; scroll-margin-top: 140px; }
+    @media (min-width: 640px) { .section { padding: 88px 0; } }
+    .section.alt { background: var(--paper-dim); }
+    .section-head { max-width: 680px; margin-bottom: 40px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .section-head h2 { font-size: clamp(24px, 5.5vw, 34px); margin-top: 10px; }
+    .section-head p { color: var(--slate); font-size: clamp(14.5px, 2.2vw, 16px); margin-top: 12px; }
+    .section-count { font-family: var(--mono); font-size: 12px; color: var(--amber-dim); white-space: nowrap; }
+
+    /* ----- EQUIPMENT GRID (shared card style) ----- */
+    .inv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 900px) { .inv-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .inv-grid { grid-template-columns: 1fr; } }
+    .inv-card {
+      border: 1px solid var(--line); border-radius: 5px; overflow: hidden; background: var(--paper);
+      display: flex; flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .inv-card:hover { transform: translateY(-6px); box-shadow: 0 20px 36px -20px rgba(27,36,48,0.4); border-color: var(--amber-dim); }
+    .inv-media { height: 150px; position: relative; overflow: hidden; background: var(--ink); }
+    .inv-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .inv-card:hover .inv-media img { transform: scale(1.06); }
+    .inv-badge {
+      position: absolute; top: 12px; left: 12px; font-family: var(--mono); font-size: 10.5px;
+      text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 9px; border-radius: 20px;
+      background: rgba(242, 239, 233, 0.92); color: var(--ink); animation: badgeIn 0.5s ease 0.3s both;
+    }
+    .inv-badge.leased { background: rgba(176, 73, 47, 0.85); color: #fff; }
+    .inv-badge.booked { background: rgba(232, 163, 61, 0.9); color: var(--ink); }
+    @keyframes badgeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    .inv-qty {
+      position: absolute; top: 12px; right: 12px; font-family: var(--mono); font-size: 10.5px;
+      padding: 4px 9px; border-radius: 20px; background: rgba(27,36,48,0.75); color: var(--paper);
+    }
+    .inv-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .inv-body h3 { font-size: 16.5px; }
+    .inv-body .inv-desc { font-size: 13.5px; color: var(--slate); }
+    .inv-specs {
+      font-family: var(--mono); font-size: 12px; color: var(--slate); display: flex; justify-content: space-between;
+      border-top: 1px dashed var(--line); padding-top: 12px; margin-top: auto; flex-wrap: wrap; gap: 6px;
+    }
+    .inv-rate { font-family: var(--mono); font-size: 15px; color: var(--ink); font-weight: 500; }
+    .inv-rate span { font-size: 11px; color: var(--slate); font-weight: 400; }
+    .inv-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+    /* ----- SPEC TABLE (maintenance / support proof points) ----- */
+    .support-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: center; }
+    @media (max-width: 900px) { .support-grid { grid-template-columns: 1fr; gap: 32px; } }
+    .support-media { border-radius: 5px; overflow: hidden; min-height: 300px; height: 100%; }
+    .support-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+    .support-media:hover img { transform: scale(1.05); }
+    .support-list { display: flex; flex-direction: column; gap: 22px; }
+    .support-row { display: flex; gap: 16px; align-items: flex-start; }
+    .support-icon {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: var(--ink); color: var(--amber);
+      display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 13px;
+    }
+    .support-row h3 { font-size: 16px; margin-bottom: 6px; }
+    .support-row p { font-size: 14px; color: var(--slate); }
+
+    /* ----- PRICING (reuse) ----- */
+    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; } }
+    .price-card {
+      border: 1px solid var(--line); border-radius: 5px; padding: 28px 22px; background: var(--paper);
+      display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    @media (min-width: 640px) { .price-card { padding: 32px 28px; } }
+    .price-card:hover { transform: translateY(-8px); box-shadow: 0 24px 40px -22px rgba(27,36,48,0.35); }
+    .price-card.featured { border-color: var(--ink); background: var(--ink); color: var(--paper); transform: scale(1.02); }
+    .price-card.featured:hover { transform: scale(1.02) translateY(-8px); }
+    .price-card.featured .plan-desc, .price-card.featured .feat { color: #B7BDC8; }
+    .plan-name { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber-dim); }
+    .price-card.featured .plan-name { color: var(--amber); }
+    .plan-price { font-family: var(--display); font-size: 30px; font-weight: 600; margin: 14px 0 4px; }
+    @media (min-width: 640px) { .plan-price { font-size: 34px; } }
+    .plan-price span { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--slate); }
+    .plan-desc { font-size: 14px; color: var(--slate); margin-bottom: 22px; }
+    .feat-list { list-style: none; padding: 0; margin: 0 0 26px; display: flex; flex-direction: column; gap: 11px; }
+    .feat { font-size: 14px; display: flex; gap: 10px; color: var(--ink-soft); transition: transform 0.2s ease; }
+    .feat:hover { transform: translateX(3px); }
+    .feat::before { content: "—"; font-family: var(--mono); color: var(--amber-dim); flex-shrink: 0; }
+
+    /* ----- TESTIMONIALS ----- */
+    .testi-cta { background: var(--steel); color: var(--paper); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 56px; }
+    @media (max-width: 900px) { .testi-grid { grid-template-columns: 1fr; } }
+    .testi { transition: transform 0.25s ease; }
+    .testi:hover { transform: translateY(-4px); }
+    .testi blockquote { font-family: var(--display); font-size: 16.5px; line-height: 1.4; margin: 0 0 18px; font-weight: 500; }
+    .testi cite { font-family: var(--mono); font-size: 12px; color: #DCE3E8; font-style: normal; }
+    .testi-person { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .testi-person img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line-light); flex-shrink: 0; }
+    .cta-band { border-top: 1px solid var(--line-light); padding-top: 44px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    @media (min-width: 640px) { .cta-band { padding-top: 52px; } }
+    .cta-band h2 { font-size: clamp(24px, 6vw, 36px); max-width: 480px; }
+
+    /* ----- FOOTER ----- */
+    footer { background: var(--ink); color: #A9AFBB; padding: 56px 0 24px; width: 100%; }
+    @media (min-width: 640px) { footer { padding: 72px 0 28px; } }
+    .foot-inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .foot-grid { display: grid; grid-template-columns: 1.8fr 1fr 1.2fr; gap: 40px; padding-bottom: 44px; border-bottom: 1px solid var(--line-light); }
+    @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; } }
+    @media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
+    .foot-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; cursor: pointer; }
+    .foot-logo img { height: 92px; width: auto; transition: transform 0.25s ease; }
+    .foot-logo:hover img { transform: rotate(-3deg) scale(1.04); }
+    .foot-blurb { font-size: 13.5px; line-height: 1.6; max-width: 320px; margin-bottom: 18px; }
+    .social-links { display: flex; gap: 16px; margin-top: 6px; }
+    .social-links a {
+      display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+      border-radius: 50%; background: rgba(255, 255, 255, 0.06); color: #C7CCD4; font-size: 16px;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .social-links a:hover { background: var(--amber); color: var(--ink); transform: translateY(-2px) rotate(8deg); }
+    .foot-col h4 { font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em; color: #7B8291; margin-bottom: 16px; }
+    .foot-col a { display: block; font-size: 14px; margin-bottom: 11px; color: #C7CCD4; transition: color 0.2s, transform 0.2s; }
+    .foot-col a:hover { color: var(--paper); transform: translateX(3px); }
+    .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; flex-wrap: wrap; gap: 14px; }
+    .foot-bottom p { font-size: 12.5px; color: #7B8291; }
+    .foot-legal { display: flex; gap: 20px; flex-wrap: wrap; }
+    .foot-legal a { font-size: 12.5px; color: #7B8291; transition: color 0.2s; }
+    .foot-legal a:hover { color: var(--paper); }
+
+    @media (max-width: 480px) {
+      .wrap { padding: 0 18px; }
+      .nav { padding: 12px 18px; }
+      .logo img { height: 38px; }
+      .foot-logo img { height: 38px; }
+      .btn { padding: 11px 18px; font-size: 13.5px; }
+      .foot-inner { padding: 0 18px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+      .support-grid { gap: 24px; }
+    }
+    @media (max-width: 360px) {
+      .wrap { padding: 0 14px; }
+      .nav { padding: 10px 14px; }
+      .foot-inner { padding: 0 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo" data-aos="fade-right" data-aos-duration="500">
+      <img src="./assets/stacly_logo1.webp" alt="Ironline" />
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="fleet.html" class="active">Fleet</a>
+      <a href="how.html">How it works</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="btn btn-primary mobile-only-cta">Login</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="22" height="16" viewBox="0 0 22 16">
+        <rect width="22" height="2" fill="#1B2430" />
+        <rect y="7" width="22" height="2" fill="#1B2430" />
+        <rect y="14" width="22" height="2" fill="#1B2430" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- ===== PAGE HERO ===== -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="breadcrumb" data-aos="fade-up" data-aos-duration="500">
+      <a href="index.html">Home</a><span>/</span><span style="color:#fff;">Fleet</span>
+    </div>
+    <span class="eyebrow" style="color: var(--amber);" data-aos="fade-up" data-aos-duration="500" data-aos-delay="50">Full Fleet Catalog</span>
+    <h1 data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">Every asset we lease, <em>organized by the work it does.</em></h1>
+    <p class="sub" data-aos="fade-up" data-aos-duration="600" data-aos-delay="150">Browse construction equipment, commercial vehicles, office infrastructure, and event gear — all backed by the same delivery, maintenance, and swap guarantees.</p>
+    <div class="hero-quick-stats" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+      <div class="qs-item"><div class="qs-num">2,411</div><div class="qs-label">Assets tracked</div></div>
+      <div class="qs-item"><div class="qs-num">178</div><div class="qs-label">Depots</div></div>
+      <div class="qs-item"><div class="qs-num">4</div><div class="qs-label">Fleet categories</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STICKY CATEGORY SUBNAV ===== -->
+<nav class="subnav">
+  <div class="subnav-inner" id="subnavInner">
+    <a href="#construction">Construction</a>
+    <a href="#vehicles">Commercial Vehicles</a>
+    <a href="#office">Office &amp; IT</a>
+    <a href="#event">Event &amp; Staging</a>
+    <a href="#support">Maintenance</a>
+    <a href="#terms">Leasing Terms</a>
+  </div>
+</nav>
+
+<!-- ===== STATS BAND ===== -->
+<section class="stats">
+  <div class="wrap stats-grid">
+    <div data-aos="fade-up" data-aos-delay="0"><div class="stat-num" data-count-to="2400" data-suffix="+">0</div><div class="stat-label">Assets in rotation</div></div>
+    <div data-aos="fade-up" data-aos-delay="100"><div class="stat-num" data-count-to="178" data-suffix="">0</div><div class="stat-label">Depots nationwide</div></div>
+    <div data-aos="fade-up" data-aos-delay="200"><div class="stat-num" data-count-to="98.6" data-suffix="%" data-decimals="1">0%</div><div class="stat-label">Fleet uptime guarantee</div></div>
+    <div data-aos="fade-up" data-aos-delay="300"><div class="stat-num">24/7</div><div class="stat-label">Field &amp; roadside support</div></div>
+  </div>
+</section>
+
+<!-- ===== SECTION 1: CONSTRUCTION EQUIPMENT ===== -->
+<section class="section" id="construction">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <div>
+        <span class="eyebrow">Category 01</span>
+        <h2>Construction Equipment</h2>
+        <p>Earthmoving, lifting, and compaction machinery, inspected and serviced between every lease.</p>
+      </div>
+      <span class="section-count">640 units available</span>
+    </div>
+    <div class="inv-grid">
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1751054770504-c69daeec4721?auto=format&fit=crop&w=500&q=60" alt="Mini excavator" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">34 units</span></div>
+        <div class="inv-body">
+          <h3>Mini Excavator, EX-80</h3>
+          <p class="inv-desc">1,240 hrs · Tier 4 Final engine · 8ft dig depth · rubber tracks</p>
+          <div class="inv-specs"><span>MODEL EX-80</span><span class="inv-rate">$260<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1684497404598-6e844dff9cde?auto=format&fit=crop&w=500&q=60" alt="Skid steer loader" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">51 units</span></div>
+        <div class="inv-body">
+          <h3>Skid Steer Loader, SSL-220</h3>
+          <p class="inv-desc">2,100 hrs · 74hp diesel · 2,200 lb rated capacity</p>
+          <div class="inv-specs"><span>MODEL SSL-220</span><span class="inv-rate">$285<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?auto=format&fit=crop&w=500&q=60" alt="Articulating boom lift" loading="lazy" /><span class="inv-badge booked">Booked 7/22</span><span class="inv-qty">19 units</span></div>
+        <div class="inv-body">
+          <h3>Articulating Boom Lift, AB-45</h3>
+          <p class="inv-desc">45ft platform height · 500 lb capacity · 4WD drive</p>
+          <div class="inv-specs"><span>MODEL AB-45</span><span class="inv-rate">$395<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1626379456424-fb1c3b588fe2?auto=format&fit=crop&w=500&q=60" alt="Telehandler" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">22 units</span></div>
+        <div class="inv-body">
+          <h3>Telehandler, TH-360</h3>
+          <p class="inv-desc">980 hrs · 36ft reach · 6,000 lb capacity</p>
+          <div class="inv-specs"><span>MODEL TH-360</span><span class="inv-rate">$310<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=500&q=60" alt="Vibratory roller compactor" loading="lazy" /><span class="inv-badge leased">On Lease</span><span class="inv-qty">12 units</span></div>
+        <div class="inv-body">
+          <h3>Vibratory Roller, VR-15</h3>
+          <p class="inv-desc">1,500 kg drum weight · asphalt &amp; soil compaction</p>
+          <div class="inv-specs"><span>MODEL VR-15</span><span class="inv-rate">$210<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1621905252203-9f52dcb54393?auto=format&fit=crop&w=500&q=60" alt="Compact track loader" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">28 units</span></div>
+        <div class="inv-body">
+          <h3>Compact Track Loader, CTL-90</h3>
+          <p class="inv-desc">890 hrs · high-flow hydraulics · low ground pressure</p>
+          <div class="inv-specs"><span>MODEL CTL-90</span><span class="inv-rate">$275<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: COMMERCIAL VEHICLES ===== -->
+<section class="section alt" id="vehicles">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <div>
+        <span class="eyebrow">Category 02</span>
+        <h2>Commercial Vehicles</h2>
+        <p>Vans, box trucks, and flatbeds for single routes or full fleet contracts.</p>
+      </div>
+      <span class="section-count">510 units available</span>
+    </div>
+    <div class="inv-grid">
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1601467995997-ac1ae9a8fff4?auto=format&fit=crop&w=500&q=60" alt="Cargo van" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">64 units</span></div>
+        <div class="inv-body">
+          <h3>Cargo Van, Transit 250</h3>
+          <p class="inv-desc">36,000 mi · 246 cu.ft cargo · backup camera</p>
+          <div class="inv-specs"><span>MODEL T-250</span><span class="inv-rate">$79<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1605678141352-ccd8c79848d9?auto=format&fit=crop&w=500&q=60" alt="Refrigerated van" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">18 units</span></div>
+        <div class="inv-body">
+          <h3>Refrigerated Van, RV-9</h3>
+          <p class="inv-desc">18,200 mi · -10°F to 40°F range · 250 cu.ft</p>
+          <div class="inv-specs"><span>MODEL RV-9</span><span class="inv-rate">$135<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=500&q=60" alt="Box truck" loading="lazy" /><span class="inv-badge leased">On Lease</span><span class="inv-qty">41 units</span></div>
+        <div class="inv-body">
+          <h3>Box Truck, 26ft — BT-114</h3>
+          <p class="inv-desc">Liftgate included · 10,000 lb payload · CDL not required</p>
+          <div class="inv-specs"><span>MODEL BT-114</span><span class="inv-rate">$1,240<span>/wk</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=500&q=60" alt="Flatbed truck" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">15 units</span></div>
+        <div class="inv-body">
+          <h3>Flatbed Truck, FB-24</h3>
+          <p class="inv-desc">24ft deck · 15,000 lb capacity · tie-down rated</p>
+          <div class="inv-specs"><span>MODEL FB-24</span><span class="inv-rate">$189<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=500&q=60" alt="Pickup truck" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">72 units</span></div>
+        <div class="inv-body">
+          <h3>Heavy-Duty Pickup, HD-2500</h3>
+          <p class="inv-desc">Crew cab · 4WD · 7,500 lb towing capacity</p>
+          <div class="inv-specs"><span>MODEL HD-2500</span><span class="inv-rate">$95<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&w=500&q=60" alt="Cube van" loading="lazy" /><span class="inv-badge booked">Booked 7/24</span><span class="inv-qty">9 units</span></div>
+        <div class="inv-body">
+          <h3>Cube Van, CV-16</h3>
+          <p class="inv-desc">16ft box · ramp included · non-CDL</p>
+          <div class="inv-specs"><span>MODEL CV-16</span><span class="inv-rate">$115<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 3: OFFICE & IT ===== -->
+<section class="section" id="office">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <div>
+        <span class="eyebrow">Category 03</span>
+        <h2>Office &amp; IT</h2>
+        <p>Mobile offices and site-ready technology for teams that move with the project.</p>
+      </div>
+      <span class="section-count">380 units available</span>
+    </div>
+    <div class="inv-grid">
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1510380290144-9e40d2438af5?auto=format&fit=crop&w=500&q=60" alt="Mobile office trailer" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">26 units</span></div>
+        <div class="inv-body">
+          <h3>Mobile Office Trailer, 32ft</h3>
+          <p class="inv-desc">HVAC, restroom, and desks included · ADA ramp available</p>
+          <div class="inv-specs"><span>MODEL MOT-32</span><span class="inv-rate">$410<span>/mo</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=500&q=60" alt="Laptops for site teams" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">140 units</span></div>
+        <div class="inv-body">
+          <h3>Rugged Laptop Bundle</h3>
+          <p class="inv-desc">Pre-configured with project software · asset-tagged</p>
+          <div class="inv-specs"><span>MODEL RLB-1</span><span class="inv-rate">$28<span>/mo ea.</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=500&q=60" alt="Site workstation" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">54 units</span></div>
+        <div class="inv-body">
+          <h3>Site-Ready Workstation</h3>
+          <p class="inv-desc">Dual monitor, dock, and ergonomic chair, delivered set up</p>
+          <div class="inv-specs"><span>MODEL SRW-2</span><span class="inv-rate">$45<span>/mo</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=500&q=60" alt="Mobile classroom trailer" loading="lazy" /><span class="inv-badge leased">On Lease</span><span class="inv-qty">7 units</span></div>
+        <div class="inv-body">
+          <h3>Mobile Classroom, 40ft</h3>
+          <p class="inv-desc">Seats 24 · whiteboard wall · projector-ready</p>
+          <div class="inv-specs"><span>MODEL MC-40</span><span class="inv-rate">$560<span>/mo</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 4: EVENT & STAGING ===== -->
+<section class="section alt" id="event">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <div>
+        <span class="eyebrow">Category 04</span>
+        <h2>Event &amp; Staging</h2>
+        <p>Staging, tenting, and power for events of any scale, set up and struck by our crews.</p>
+      </div>
+      <span class="section-count">290 units available</span>
+    </div>
+    <div class="inv-grid">
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1698321170838-27f96d9463af?auto=format&fit=crop&w=500&q=60" alt="Modular event staging" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">40 units</span></div>
+        <div class="inv-body">
+          <h3>Modular Stage Deck, 8x8</h3>
+          <p class="inv-desc">Adjustable height 24"–48" · anti-slip surface</p>
+          <div class="inv-specs"><span>MODEL MSD-8</span><span class="inv-rate">$65<span>/day ea.</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=500&q=60" alt="Event tenting" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">22 units</span></div>
+        <div class="inv-body">
+          <h3>Frame Tent, 40x60</h3>
+          <p class="inv-desc">Seats 240 · sidewalls and lighting available</p>
+          <div class="inv-specs"><span>MODEL FT-40x60</span><span class="inv-rate">$820<span>/event</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?auto=format&fit=crop&w=500&q=60" alt="Portable generator" loading="lazy" /><span class="inv-badge">Available</span><span class="inv-qty">31 units</span></div>
+        <div class="inv-body">
+          <h3>Towable Generator, 50kW</h3>
+          <p class="inv-desc">Whisper-quiet enclosure · fuel included on delivery</p>
+          <div class="inv-specs"><span>MODEL GEN-50</span><span class="inv-rate">$225<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=500&q=60" alt="Climate control unit" loading="lazy" /><span class="inv-badge booked">Booked 8/02</span><span class="inv-qty">11 units</span></div>
+        <div class="inv-body">
+          <h3>Spot Cooler / Heater, 5-Ton</h3>
+          <p class="inv-desc">Climate control for tents and temporary structures</p>
+          <div class="inv-specs"><span>MODEL SC-5T</span><span class="inv-rate">$180<span>/day</span></span></div>
+          <div class="inv-foot"><a href="404.html" class="btn btn-outline btn-sm">Reserve</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 5: MAINTENANCE & SUPPORT ===== -->
+<section class="section" id="support">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Behind every lease</span>
+      <h2>Maintenance and support that travels with the asset.</h2>
+    </div>
+    <div class="support-grid">
+      <div class="support-media" data-aos="fade-right" data-aos-duration="700">
+        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=700&q=60" alt="Technician servicing equipment" loading="lazy" />
+      </div>
+      <div class="support-list">
+        <div class="support-row" data-aos="fade-up" data-aos-delay="0">
+          <div class="support-icon">01</div>
+          <div><h3>Pre-lease inspection</h3><p>Every unit is serviced and safety-checked before it leaves a depot, with a report attached to the lease.</p></div>
+        </div>
+        <div class="support-row" data-aos="fade-up" data-aos-delay="100">
+          <div class="support-icon">02</div>
+          <div><h3>24/7 roadside &amp; field response</h3><p>A breakdown call routes to the nearest depot, with most replacement units on-site within 24 hours.</p></div>
+        </div>
+        <div class="support-row" data-aos="fade-up" data-aos-delay="200">
+          <div class="support-icon">03</div>
+          <div><h3>Scheduled servicing included</h3><p>Oil changes, filters, and wear-part swaps happen on a set interval, tracked automatically per unit.</p></div>
+        </div>
+        <div class="support-row" data-aos="fade-up" data-aos-delay="300">
+          <div class="support-icon">04</div>
+          <div><h3>178 depots nationwide</h3><p>A replacement or upgrade unit is rarely more than a same-day delivery away, wherever the job is.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 6: LEASING TERMS ===== -->
+<section class="section alt" id="terms">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Leasing plans</span>
+      <h2>Terms that match how long you actually need it.</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card" data-aos="fade-up" data-aos-delay="0">
+        <span class="plan-name">Short-Term</span>
+        <div class="plan-price">Daily<span> rate</span></div>
+        <p class="plan-desc">For single jobs, spot coverage, or trying equipment before committing longer.</p>
+        <ul class="feat-list"><li class="feat">1–29 day terms</li><li class="feat">Delivery &amp; pickup included</li><li class="feat">Swap units anytime</li><li class="feat">No credit application required</li></ul>
+        <a href="404.html" class="btn btn-outline">Get a quote</a>
+      </div>
+      <div class="price-card featured" data-aos="zoom-in" data-aos-delay="100">
+        <span class="plan-name">Seasonal</span>
+        <div class="plan-price">Monthly<span style="color:#B7BDC8;"> rate</span></div>
+        <p class="plan-desc">Built for project-length or seasonal work where needs shift month to month.</p>
+        <ul class="feat-list"><li class="feat">1–11 month terms</li><li class="feat">Priority delivery windows</li><li class="feat">Free unit upgrades on demand spikes</li><li class="feat">Dedicated account manager</li></ul>
+        <a href="404.html" class="btn btn-primary">Get a quote</a>
+      </div>
+      <div class="price-card" data-aos="fade-up" data-aos-delay="200">
+        <span class="plan-name">Long-Term Lease</span>
+        <div class="plan-price">Custom<span> rate</span></div>
+        <p class="plan-desc">For fleets you're committing to for a year or more, with rates built around volume.</p>
+        <ul class="feat-list"><li class="feat">12+ month terms</li><li class="feat">Volume-based pricing</li><li class="feat">Guaranteed replacement SLA</li><li class="feat">Buyout option at term end</li></ul>
+        <a href="404.html" class="btn btn-outline">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: TESTIMONIALS + CTA ===== -->
+<section class="testi-cta">
+  <div class="wrap" style="padding-top:72px; padding-bottom:72px;">
+    <div class="testi-grid">
+      <div class="testi" data-aos="fade-up" data-aos-delay="0">
+        <blockquote>"We stopped owning depreciating equipment and started leasing exactly what each job needs. Utilization went up, and so did our margins."</blockquote>
+        <div class="testi-person"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=60" alt="" loading="lazy" /><cite>Fleet Operations Director, regional contractor</cite></div>
+      </div>
+      <div class="testi" data-aos="fade-up" data-aos-delay="100">
+        <blockquote>"A unit went down on a Friday and a replacement was on site by Saturday morning. That response time is the whole reason we stayed."</blockquote>
+        <div class="testi-person"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=100&q=60" alt="" loading="lazy" /><cite>Logistics Manager, distribution company</cite></div>
+      </div>
+      <div class="testi" data-aos="fade-up" data-aos-delay="200">
+        <blockquote>"Rates are quoted straight, no surprise mileage charges at return. Easiest vendor relationship we manage."</blockquote>
+        <div class="testi-person"><img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=100&q=60" alt="" loading="lazy" /><cite>Site Superintendent, general contractor</cite></div>
+      </div>
+    </div>
+    <div class="cta-band" data-aos="fade-up">
+      <h2>Ready to reserve from the full fleet?</h2>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="404.html" class="btn btn-primary">Browse categories</a>
+        <a href="404.html" class="btn btn-outline on-dark">Request a quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer id="footer">
+  <div class="foot-inner">
+    <div class="foot-grid">
+      <div data-aos="fade-up" data-aos-delay="0">
+        <a href="index.html" class="foot-logo">
+          <img src="./assets/logo.webp" alt="Ironline" />
+        </a>
+        <p class="foot-blurb">Rental and leasing for construction equipment, commercial vehicles, and site infrastructure — nationwide, with maintenance built in.</p>
+        <div class="social-links">
+          <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="404.html" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="foot-col" data-aos="fade-up" data-aos-delay="100">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="fleet.html">Fleet</a>
+        <a href="index.html#how">How it works</a>
+        <a href="index.html#inventory">Inventory</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#footer">Contact</a>
+      </div>
+      <div class="foot-col" data-aos="fade-up" data-aos-delay="200">
+        <h4>Contact</h4>
+        <a href="tel:18005550148">1-800-555-0148</a>
+        <a href="404.html">stackly@ironline.com</a>
+        <a href="404.html">MMR Complex, Periyakollappatty,<br />Chinna Thirupathi, Salem,<br />Tamil Nadu 636008</a>
+      </div>
+    </div>
+    <div class="foot-bottom" data-aos="fade-up">
+      <p>© 2026 STACKLY Rental &amp; Leasing. All rights reserved.</p>
+      <div class="foot-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Insurance requirements</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // AOS
+    var items = document.querySelectorAll('[data-aos]');
+    items.forEach(function(el) {
+      var delay = el.getAttribute('data-aos-delay');
+      var duration = el.getAttribute('data-aos-duration');
+      if (delay) el.style.setProperty('--aos-delay', delay + 'ms');
+      if (duration) el.style.setProperty('--aos-duration', duration + 'ms');
+    });
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('aos-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      items.forEach(function(el) { observer.observe(el); });
+    } else {
+      items.forEach(function(el) { el.classList.add('aos-in'); });
+    }
+
+    // Hamburger
+    var toggle = document.getElementById('menuToggle');
+    var navLinks = document.getElementById('navLinks');
+    if (toggle && navLinks) {
+      function closeMenu() { navLinks.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }
+      function openMenu() { navLinks.classList.add('open'); toggle.setAttribute('aria-expanded', 'true'); }
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (navLinks.classList.contains('open')) closeMenu(); else openMenu();
+      });
+      navLinks.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+      document.addEventListener('click', function(e) {
+        if (!navLinks.classList.contains('open')) return;
+        if (navLinks.contains(e.target) || toggle.contains(e.target)) return;
+        closeMenu();
+      });
+      window.addEventListener('resize', function() { if (window.innerWidth > 840) closeMenu(); });
+    }
+
+    // Animated stat counters
+    var counters = document.querySelectorAll('[data-count-to]');
+    function runCounter(el) {
+      var target = parseFloat(el.getAttribute('data-count-to'));
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      var suffix = el.getAttribute('data-suffix') || '';
+      var duration = 1400;
+      var startTime = null;
+      function easeOutQuad(t) { return t * (2 - t); }
+      function step(ts) {
+        if (!startTime) startTime = ts;
+        var progress = Math.min((ts - startTime) / duration, 1);
+        var eased = easeOutQuad(progress);
+        var value = target * eased;
+        el.textContent = value.toFixed(decimals) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target.toFixed(decimals) + suffix;
+      }
+      requestAnimationFrame(step);
+    }
+    if (counters.length && 'IntersectionObserver' in window) {
+      var counterObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) { runCounter(entry.target); counterObserver.unobserve(entry.target); }
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(function(el) { counterObserver.observe(el); });
+    } else {
+      counters.forEach(function(el) { runCounter(el); });
+    }
+
+    // Sticky subnav: highlight active category on scroll
+    var subLinks = document.querySelectorAll('.subnav a');
+    var sections = Array.prototype.map.call(subLinks, function(a) {
+      return document.querySelector(a.getAttribute('href'));
+    }).filter(Boolean);
+    function setActiveSub() {
+      var scrollPos = window.scrollY + 160;
+      var current = sections[0];
+      sections.forEach(function(sec) {
+        if (sec.offsetTop <= scrollPos) current = sec;
+      });
+      subLinks.forEach(function(a) {
+        var target = document.querySelector(a.getAttribute('href'));
+        a.classList.toggle('active', target === current);
+      });
+    }
+    window.addEventListener('scroll', setActiveSub, { passive: true });
+    setActiveSub();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ironline — Equipment & Vehicle Rental, Leased on Your Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Font Awesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ----- RESET & VARIABLES ----- */
+    :root {
+      --ink: #1B2430;
+      --ink-soft: #2B3646;
+      --steel: #3D5A73;
+      --paper: #F2EFE9;
+      --paper-dim: #E8E3D8;
+      --amber: #E8A33D;
+      --amber-dim: #C6862A;
+      --slate: #6B7280;
+      --green: #4A7A5C;
+      --line: rgba(27, 36, 48, 0.14);
+      --line-light: rgba(242, 239, 233, 0.16);
+      --display: 'Space Grotesk', sans-serif;
+      --body: 'Inter', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4 { font-family: var(--display); letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-dim);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 3px;
+      font-weight: 600;
+      font-size: 14.5px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--amber); color: var(--ink); }
+    .btn-primary:hover { background: var(--amber-dim); box-shadow: 0 8px 20px -6px rgba(232, 163, 61, 0.55); }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .btn-primary:hover::after { left: 130%; }
+    .btn-outline { border-color: var(--line); color: var(--ink); background: transparent; }
+    .btn-outline:hover { border-color: var(--ink); }
+    .btn-outline.on-dark { border-color: var(--line-light); color: var(--paper); }
+    .btn-outline.on-dark:hover { border-color: var(--paper); }
+
+    /* ----- AOS ANIMATION ENGINE ----- */
+    [data-aos] {
+      opacity: 0;
+      transition-property: opacity, transform;
+      transition-duration: var(--aos-duration, 600ms);
+      transition-delay: var(--aos-delay, 0ms);
+      transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    [data-aos="fade-up"] { transform: translateY(28px); }
+    [data-aos="fade-down"] { transform: translateY(-28px); }
+    [data-aos="fade-right"] { transform: translateX(-32px); }
+    [data-aos="fade-left"] { transform: translateX(32px); }
+    [data-aos="zoom-in"] { transform: scale(0.92); }
+    [data-aos].aos-in {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-aos] { transition-duration: 1ms !important; transform: none !important; opacity: 1 !important; }
+    }
+
+    /* ----- HEADER ----- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: white;
+      border-bottom: 1px solid var(--line);
+      animation: headerDrop 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes headerDrop {
+      from { transform: translateY(-100%); }
+      to { transform: translateY(0); }
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .logo { display: flex; align-items: center; cursor: pointer; }
+    .logo img { height: 54px; width: auto; display: block; transition: transform 0.25s ease; }
+    .logo:hover img { transform: rotate(-3deg) scale(1.04); }
+    .nav-links { display: flex; gap: 34px; align-items: center; }
+    .nav-links a {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      position: relative;
+      padding-bottom: 3px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 0; height: 2px;
+      background: var(--amber);
+      transition: width 0.25s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { display: flex; align-items: center; gap: 18px; }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 60;
+    }
+    .menu-toggle svg { display: block; }
+    .menu-toggle svg rect {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(2) { opacity: 0; }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ----- MOBILE FULLSCREEN HAMBURGER ----- */
+    @media (max-width: 840px) {
+      .nav-cta { display: none; }
+      .menu-toggle { display: block; }
+
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--paper);
+        padding: 0 24px;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 55;
+        overflow-y: auto;
+      }
+      .nav-links.open {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
+      .nav-links a {
+        font-size: 22px;
+        font-weight: 600;
+        padding: 18px 0;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink);
+        transition: color 0.2s, transform 0.4s ease, opacity 0.4s ease;
+        transform: translateY(14px);
+        opacity: 0;
+      }
+      .nav-links.open a { transform: translateY(0); opacity: 1; }
+      .nav-links.open a:nth-child(1) { transition-delay: 0.05s; }
+      .nav-links.open a:nth-child(2) { transition-delay: 0.1s; }
+      .nav-links.open a:nth-child(3) { transition-delay: 0.15s; }
+      .nav-links.open a:nth-child(4) { transition-delay: 0.2s; }
+      .nav-links.open a:nth-child(5) { transition-delay: 0.25s; }
+      .nav-links.open a:nth-child(6) { transition-delay: 0.3s; }
+      .nav-links.open a:nth-child(7) { transition-delay: 0.35s; }
+      .nav-links a:last-of-type { border-bottom: none; }
+      .nav-links a:hover { color: var(--amber); }
+
+      .mobile-only-cta {
+        display: block;
+        margin-top: 24px;
+        width: auto;
+        text-align: center;
+      }
+      .mobile-only-cta.btn {
+        font-size: 18px;
+        padding: 14px 44px;
+      }
+    }
+
+    /* ----- HERO (background) ----- */
+    .hero {
+      padding: 64px 0 72px;
+      background-image: url('https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center 35%;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(27, 36, 48, 0.55);
+      z-index: -1;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+    .hero h1 {
+      font-size: clamp(30px, 8vw, 58px);
+      line-height: 1.08;
+      margin: 16px 0 22px;
+      color: #fff;
+    }
+    .hero h1 em { font-style: normal; color: var(--amber); }
+    .hero p.sub {
+      font-size: clamp(15px, 2.6vw, 18px);
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 34px; }
+    .hero-microcopy {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.02em;
+    }
+
+    /* ----- FLEET BOARD ----- */
+    .board {
+      background: var(--ink);
+      border-radius: 6px;
+      padding: 20px 16px 8px;
+      box-shadow: 0 30px 60px -20px rgba(27, 36, 48, 0.7);
+      overflow: hidden;
+      animation: boardFloat 6s ease-in-out infinite;
+    }
+    @keyframes boardFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .board-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line-light);
+    }
+    .board-title { color: var(--paper); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .board-live { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; color: var(--green); flex-shrink: 0; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 122, 92, 0.6); } 50% { opacity: 0.35; box-shadow: 0 0 0 4px rgba(74, 122, 92, 0); } }
+    .board-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 13px 4px;
+      border-bottom: 1px solid var(--line-light);
+      opacity: 0;
+      transform: translateX(-10px);
+      animation: rowSlide 0.5s ease forwards;
+      transition: background 0.2s ease;
+    }
+    .board-row:hover { background: rgba(242, 239, 233, 0.04); }
+    .board-row:nth-child(2) { animation-delay: 0.15s; }
+    .board-row:nth-child(3) { animation-delay: 0.3s; }
+    .board-row:nth-child(4) { animation-delay: 0.45s; }
+    .board-row:nth-child(5) { animation-delay: 0.6s; }
+    .board-row:nth-child(6) { animation-delay: 0.75s; }
+    @keyframes rowSlide {
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .board-row:last-child { border-bottom: none; }
+    .board-asset { color: var(--paper); font-size: 13.5px; font-weight: 500; word-break: break-word; }
+    .board-cat { font-family: var(--mono); font-size: 10.5px; color: #8A93A3; display: block; margin-top: 2px; }
+    .board-rate { font-family: var(--mono); font-size: 12.5px; color: var(--paper); text-align: right; white-space: nowrap; }
+    .pill {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .pill.available { background: rgba(74, 122, 92, 0.18); color: #7FBE94; animation: glowGreen 2.4s ease-in-out infinite; }
+    @keyframes glowGreen { 0%,100% { box-shadow: 0 0 0 0 rgba(127, 190, 148, 0); } 50% { box-shadow: 0 0 8px 0 rgba(127, 190, 148, 0.35); } }
+    .pill.leased { background: rgba(176, 73, 47, 0.18); color: #E08064; }
+    .pill.booked { background: rgba(232, 163, 61, 0.16); color: var(--amber); }
+    .board-foot { padding: 12px 4px 4px; font-family: var(--mono); font-size: 10.5px; color: #8A93A3; }
+
+    /* ----- STATS ----- */
+    .stats { background: var(--ink); color: var(--paper); padding: 44px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    @media (max-width: 800px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-num { font-family: var(--display); font-size: clamp(24px, 7vw, 38px); font-weight: 600; color: var(--amber); }
+    .stat-label { font-family: var(--mono); font-size: 11.5px; color: #A9AFBB; margin-top: 6px; letter-spacing: 0.02em; }
+
+    /* ----- SECTIONS ----- */
+    .section { padding: 72px 0; }
+    @media (min-width: 640px) { .section { padding: 96px 0; } }
+    .section-head { max-width: 640px; margin-bottom: 44px; }
+    .section-head h2 { font-size: clamp(26px, 6vw, 38px); margin-top: 12px; }
+    .section-head p { color: var(--slate); font-size: clamp(15px, 2.4vw, 16.5px); margin-top: 14px; }
+    .section.alt { background: var(--paper-dim); }
+
+    /* ----- CATEGORIES ----- */
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    @media (max-width: 900px) { .cat-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .cat-grid { grid-template-columns: 1fr; } }
+    .cat-card { background: var(--paper); padding: 0 0 26px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; transition: background 0.15s, transform 0.25s ease, box-shadow 0.25s ease; position: relative; z-index: 1; }
+    .cat-card:hover { background: #FBFAF7; transform: translateY(-6px); box-shadow: 0 18px 34px -18px rgba(27,36,48,0.35); z-index: 2; }
+    .cat-media { height: 132px; overflow: hidden; }
+    .cat-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .cat-card:hover .cat-media img { transform: scale(1.06); }
+    .cat-card-body { padding: 22px 26px 0; }
+    .cat-icon { width: 28px; height: 28px; margin-bottom: 16px; transition: transform 0.3s ease; }
+    .cat-card:hover .cat-icon { transform: scale(1.12) rotate(-4deg); }
+    .cat-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .cat-card p { font-size: 14px; color: var(--slate); }
+    .cat-count { font-family: var(--mono); font-size: 12px; color: var(--amber-dim); margin-top: 16px; display: block; padding: 0 26px; }
+
+    /* ----- HOW IT WORKS ----- */
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; gap: 32px; } }
+    .how-media { border-radius: 5px; overflow: hidden; height: 100%; min-height: 260px; }
+    @media (min-width: 640px) { .how-media { min-height: 340px; } }
+    .how-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+    .how-media:hover img { transform: scale(1.05); }
+    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; row-gap: 32px; }
+    @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+    .step { transition: transform 0.25s ease; }
+    .step:hover { transform: translateX(4px); }
+    .step-num { font-family: var(--mono); font-size: 12.5px; color: var(--amber-dim); margin-bottom: 12px; display: block; }
+    .step h3 { font-size: 17px; margin-bottom: 10px; }
+    .step p { font-size: 14px; color: var(--slate); }
+
+    /* ----- INVENTORY ----- */
+    .inv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 900px) { .inv-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .inv-grid { grid-template-columns: 1fr; } }
+    .inv-card { border: 1px solid var(--line); border-radius: 5px; overflow: hidden; background: var(--paper); display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+    .inv-card:hover { transform: translateY(-6px); box-shadow: 0 20px 36px -20px rgba(27,36,48,0.4); border-color: var(--amber-dim); }
+    .inv-media { height: 150px; position: relative; overflow: hidden; background: var(--ink); }
+    .inv-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .inv-card:hover .inv-media img { transform: scale(1.06); }
+    .inv-badge { position: absolute; top: 12px; left: 12px; font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 9px; border-radius: 20px; background: rgba(242, 239, 233, 0.92); color: var(--ink); animation: badgeIn 0.5s ease 0.3s both; }
+    @keyframes badgeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    .inv-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .inv-body h3 { font-size: 16.5px; }
+    .inv-specs { font-family: var(--mono); font-size: 12px; color: var(--slate); display: flex; justify-content: space-between; border-top: 1px dashed var(--line); padding-top: 12px; margin-top: auto; flex-wrap: wrap; gap: 6px; }
+    .inv-rate { font-family: var(--mono); font-size: 15px; color: var(--ink); font-weight: 500; }
+    .inv-rate span { font-size: 11px; color: var(--slate); font-weight: 400; }
+
+    /* ----- BENEFITS ----- */
+    .benefits-media { height: 180px; border-radius: 5px; overflow: hidden; margin-bottom: 32px; position: relative; }
+    @media (min-width: 640px) { .benefits-media { height: 220px; margin-bottom: 36px; } }
+    .benefits-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .benefits-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(27, 36, 48, 0.75), rgba(27, 36, 48, 0.1)); }
+    .benefits-media span { position: absolute; left: 20px; bottom: 16px; color: var(--paper); font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; z-index: 1; }
+    .benefits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+    @media (max-width: 700px) { .benefits { grid-template-columns: 1fr; } }
+    .benefit { background: var(--ink); color: var(--paper); padding: 28px 24px; display: flex; gap: 16px; transition: background 0.25s ease; }
+    .benefit:hover { background: #232E3C; }
+    @media (min-width: 640px) { .benefit { padding: 36px 32px; gap: 18px; } }
+    .benefit-mark { font-family: var(--mono); font-size: 13px; color: var(--amber); flex-shrink: 0; padding-top: 2px; transition: transform 0.25s ease; }
+    .benefit:hover .benefit-mark { transform: translateX(4px); }
+    .benefit h3 { font-size: 16.5px; margin-bottom: 8px; }
+    .benefit p { font-size: 13.5px; color: #A9AFBB; }
+
+    /* ----- PRICING ----- */
+    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; } }
+    .price-card { border: 1px solid var(--line); border-radius: 5px; padding: 28px 22px; background: var(--paper); display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    @media (min-width: 640px) { .price-card { padding: 32px 28px; } }
+    .price-card:hover { transform: translateY(-8px); box-shadow: 0 24px 40px -22px rgba(27,36,48,0.35); }
+    .price-card.featured { border-color: var(--ink); background: var(--ink); color: var(--paper); transform: scale(1.02); }
+    .price-card.featured:hover { transform: scale(1.02) translateY(-8px); }
+    .price-card.featured .plan-desc,
+    .price-card.featured .feat { color: #B7BDC8; }
+    .plan-name { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber-dim); }
+    .price-card.featured .plan-name { color: var(--amber); }
+    .plan-price { font-family: var(--display); font-size: 30px; font-weight: 600; margin: 14px 0 4px; }
+    @media (min-width: 640px) { .plan-price { font-size: 34px; } }
+    .plan-price span { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--slate); }
+    .plan-desc { font-size: 14px; color: var(--slate); margin-bottom: 22px; }
+    .feat-list { list-style: none; padding: 0; margin: 0 0 26px; display: flex; flex-direction: column; gap: 11px; }
+    .feat { font-size: 14px; display: flex; gap: 10px; color: var(--ink-soft); transition: transform 0.2s ease; }
+    .feat:hover { transform: translateX(3px); }
+    .feat::before { content: "—"; font-family: var(--mono); color: var(--amber-dim); flex-shrink: 0; }
+
+    /* ----- TESTIMONIALS + CTA ----- */
+    .testi-cta { background: var(--steel); color: var(--paper); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 56px; }
+    @media (max-width: 900px) { .testi-grid { grid-template-columns: 1fr; } }
+    .testi { transition: transform 0.25s ease; }
+    .testi:hover { transform: translateY(-4px); }
+    .testi blockquote { font-family: var(--display); font-size: 16.5px; line-height: 1.4; margin: 0 0 18px; font-weight: 500; }
+    .testi cite { font-family: var(--mono); font-size: 12px; color: #DCE3E8; font-style: normal; }
+    .testi-person { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .testi-person img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line-light); flex-shrink: 0; }
+    .cta-band { border-top: 1px solid var(--line-light); padding-top: 44px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    @media (min-width: 640px) { .cta-band { padding-top: 52px; } }
+    .cta-band h2 { font-size: clamp(24px, 6vw, 36px); max-width: 480px; }
+
+    /* ----- FOOTER (full width, quick links, social icons, no company) ----- */
+    footer {
+      background: var(--ink);
+      color: #A9AFBB;
+      padding: 56px 0 24px;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      footer { padding: 72px 0 28px; }
+    }
+
+    .foot-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1.2fr;
+      gap: 40px;
+      padding-bottom: 44px;
+      border-bottom: 1px solid var(--line-light);
+    }
+    @media (max-width: 900px) {
+      .foot-grid {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 36px;
+      }
+    }
+    @media (max-width: 560px) {
+      .foot-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .foot-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+    .foot-logo img { height: 92px; width: auto; transition: transform 0.25s ease; }
+    .foot-logo:hover img { transform: rotate(-3deg) scale(1.04); }
+    .foot-blurb {
+      font-size: 13.5px;
+      line-height: 1.6;
+      max-width: 320px;
+      margin-bottom: 18px;
+    }
+
+    /* Social icons */
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      color: #C7CCD4;
+      font-size: 16px;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .social-links a:hover {
+      background: var(--amber);
+      color: var(--ink);
+      transform: translateY(-2px) rotate(8deg);
+    }
+
+    .foot-col h4 {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7B8291;
+      margin-bottom: 16px;
+    }
+    .foot-col a {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 11px;
+      color: #C7CCD4;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .foot-col a:hover { color: var(--paper); transform: translateX(3px); }
+
+    .foot-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 22px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .foot-bottom p { font-size: 12.5px; color: #7B8291; }
+    .foot-legal {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .foot-legal a {
+      font-size: 12.5px;
+      color: #7B8291;
+      transition: color 0.2s;
+    }
+    .foot-legal a:hover { color: var(--paper); }
+
+    /* small screen tweaks */
+    @media (max-width: 480px) {
+      .wrap { padding: 0 18px; }
+      .nav { padding: 12px 18px; }
+      .logo img { height: 38px; }
+      .foot-logo img { height: 38px; }
+      .btn { padding: 11px 18px; font-size: 13.5px; }
+      .board { padding: 16px 12px 6px; }
+      .foot-inner { padding: 0 18px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+    }
+    @media (max-width: 360px) {
+      .wrap { padding: 0 14px; }
+      .nav { padding: 10px 14px; }
+      .foot-inner { padding: 0 14px; }
+      .board-row { grid-template-columns: 1fr auto; row-gap: 6px; }
+      .board-rate { grid-column: 2; justify-self: end; }
+      .pill { grid-column: 1; justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo" data-aos="fade-right" data-aos-duration="500">
+      <img src="./assets/stacly_logo1.webp" alt="Ironline" />
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="fleet.html">Fleet</a>
+      <a href="how.html">How it works</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="btn btn-primary mobile-only-cta">Login</a>
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="22" height="16" viewBox="0 0 22 16">
+        <rect width="22" height="2" fill="#1B2430" />
+        <rect y="7" width="22" height="2" fill="#1B2430" />
+        <rect y="14" width="22" height="2" fill="#1B2430" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div data-aos="fade-right" data-aos-duration="700">
+      <span class="eyebrow" style="color: var(--amber);">Rental &amp; Leasing / Nationwide Fleet</span>
+      <h1>Equipment and vehicles,<br /><em>leased on your schedule.</em></h1>
+      <p class="sub">Reserve construction equipment, commercial vehicles, and workspace assets by the day, season, or year — delivered, maintained, and swapped out without slowing your operation down.</p>
+      <div class="hero-actions">
+        <a href="#inventory" class="btn btn-primary">Browse the fleet</a>
+        <a href="#footer" class="btn btn-outline on-dark">Talk to a specialist</a>
+      </div>
+      <p class="hero-microcopy">No long-term purchase commitment · Same-week delivery in 48 states</p>
+    </div>
+
+    <div class="board" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+      <div class="board-head">
+        <span class="board-title">Fleet Availability</span>
+        <span class="board-live"><span class="dot"></span>LIVE</span>
+      </div>
+      <div class="board-row">
+        <div><span class="board-asset">Skid Steer Loader, SSL-220</span><span class="board-cat">Construction</span></div>
+        <span class="pill available">Available</span>
+        <span class="board-rate">$285<span style="color:#8A93A3">/day</span></span>
+      </div>
+      <div class="board-row">
+        <div><span class="board-asset">Box Truck, 26ft — BT-114</span><span class="board-cat">Commercial Vehicles</span></div>
+        <span class="pill leased">On Lease</span>
+        <span class="board-rate">$1,240<span style="color:#8A93A3">/wk</span></span>
+      </div>
+      <div class="board-row">
+        <div><span class="board-asset">Mobile Office Trailer, 32ft</span><span class="board-cat">Office &amp; Site</span></div>
+        <span class="pill available">Available</span>
+        <span class="board-rate">$410<span style="color:#8A93A3">/mo</span></span>
+      </div>
+      <div class="board-row">
+        <div><span class="board-asset">Articulating Boom Lift, AB-45</span><span class="board-cat">Construction</span></div>
+        <span class="pill booked">Booked 7/22</span>
+        <span class="board-rate">$395<span style="color:#8A93A3">/day</span></span>
+      </div>
+      <div class="board-row">
+        <div><span class="board-asset">Cargo Van, Transit 250</span><span class="board-cat">Commercial Vehicles</span></div>
+        <span class="pill available">Available</span>
+        <span class="board-rate">$79<span style="color:#8A93A3">/day</span></span>
+      </div>
+      <div class="board-foot">2,411 assets tracked · updated continuously</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats">
+  <div class="wrap stats-grid">
+    <div data-aos="fade-up" data-aos-delay="0"><div class="stat-num" data-count-to="2400" data-suffix="+">0</div><div class="stat-label">Assets in rotation</div></div>
+    <div data-aos="fade-up" data-aos-delay="100"><div class="stat-num" data-count-to="48" data-suffix="">0</div><div class="stat-label">States served</div></div>
+    <div data-aos="fade-up" data-aos-delay="200"><div class="stat-num" data-count-to="98.6" data-suffix="%" data-decimals="1">0%</div><div class="stat-label">Fleet uptime guarantee</div></div>
+    <div data-aos="fade-up" data-aos-delay="300"><div class="stat-num">24/7</div><div class="stat-label">Field &amp; roadside support</div></div>
+  </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="section" id="categories">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">What you can lease</span>
+      <h2>Four fleets, one contract.</h2>
+      <p>Mix categories on a single account — construction gear for the job site, vehicles for the route, and office assets for the crew running it all.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
+    <div class="cat-grid">
+      <div class="cat-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="cat-media"><img src="https://images.unsplash.com/photo-1684497404598-6e844dff9cde?auto=format&fit=crop&w=600&q=60" alt="Construction" loading="lazy" /></div>
+        <div class="cat-card-body">
+          <svg class="cat-icon" viewBox="0 0 34 34" fill="none"><rect x="4" y="14" width="18" height="10" rx="1" stroke="#1B2430" stroke-width="1.6"/><circle cx="9" cy="26" r="2.4" stroke="#1B2430" stroke-width="1.6"/><circle cx="19" cy="26" r="2.4" stroke="#1B2430" stroke-width="1.6"/><path d="M22 18h6l2 5v1h-8" stroke="#1B2430" stroke-width="1.6"/></svg>
+          <h3>Construction Equipment</h3>
+          <p>Skid steers, excavators, boom lifts, and compaction gear, inspected between every lease.</p>
+        </div>
+        <span class="cat-count">640 units available</span>
+      </div>
+      <div class="cat-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="cat-media"><img src="https://images.unsplash.com/photo-1601467995997-ac1ae9a8fff4?auto=format&fit=crop&w=600&q=60" alt="Commercial vehicles" loading="lazy" /></div>
+        <div class="cat-card-body">
+          <svg class="cat-icon" viewBox="0 0 34 34" fill="none"><rect x="3" y="10" width="28" height="12" rx="1.5" stroke="#1B2430" stroke-width="1.6"/><circle cx="10" cy="25" r="2.6" stroke="#1B2430" stroke-width="1.6"/><circle cx="24" cy="25" r="2.6" stroke="#1B2430" stroke-width="1.6"/></svg>
+          <h3>Commercial Vehicles</h3>
+          <p>Cargo vans, box trucks, and flatbeds available for single routes or full fleet leasing.</p>
+        </div>
+        <span class="cat-count">510 units available</span>
+      </div>
+      <div class="cat-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="cat-media"><img src="https://images.unsplash.com/photo-1510380290144-9e40d2438af5?auto=format&fit=crop&w=600&q=60" alt="Office and IT" loading="lazy" /></div>
+        <div class="cat-card-body">
+          <svg class="cat-icon" viewBox="0 0 34 34" fill="none"><rect x="5" y="6" width="24" height="17" rx="1.5" stroke="#1B2430" stroke-width="1.6"/><line x1="5" y1="14" x2="29" y2="14" stroke="#1B2430" stroke-width="1.6"/><line x1="12" y1="27" x2="22" y2="27" stroke="#1B2430" stroke-width="1.6"/></svg>
+          <h3>Office &amp; IT</h3>
+          <p>Mobile offices, laptops, and site-ready workstations for teams that move with the project.</p>
+        </div>
+        <span class="cat-count">380 units available</span>
+      </div>
+      <div class="cat-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="cat-media"><img src="https://images.unsplash.com/photo-1698321170838-27f96d9463af?auto=format&fit=crop&w=600&q=60" alt="Event staging" loading="lazy" /></div>
+        <div class="cat-card-body">
+          <svg class="cat-icon" viewBox="0 0 34 34" fill="none"><path d="M6 26 V16 L17 6 L28 16 V26 Z" stroke="#1B2430" stroke-width="1.6" fill="none"/><line x1="13" y1="26" x2="13" y2="18" stroke="#1B2430" stroke-width="1.6"/></svg>
+          <h3>Event &amp; Staging</h3>
+          <p>Staging, tenting, generators, and climate control for events of any scale.</p>
+        </div>
+        <span class="cat-count">290 units available</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section alt" id="how">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Process</span>
+      <h2>From reservation to return.</h2>
+      <p>Every lease moves through the same four checkpoints, whether it's a single day or a multi-year contract.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-media" data-aos="fade-right" data-aos-duration="700">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=700&q=60" alt="Fleet manager" loading="lazy" />
+      </div>
+      <div class="steps">
+        <div class="step" data-aos="fade-up" data-aos-delay="0">
+          <span class="step-num">01 / Reserve</span>
+          <h3>Lock in your asset</h3>
+          <p>Check live availability, pick your term, and confirm rate — no waiting on a callback to get a number.</p>
+        </div>
+        <div class="step" data-aos="fade-up" data-aos-delay="100">
+          <span class="step-num">02 / Deliver</span>
+          <h3>We bring it to you</h3>
+          <p>Assets arrive inspected and fueled, with a walkthrough on-site or a set of keys handed straight over.</p>
+        </div>
+        <div class="step" data-aos="fade-up" data-aos-delay="200">
+          <span class="step-num">03 / Operate</span>
+          <h3>Run it, we maintain it</h3>
+          <p>Scheduled servicing and breakdown coverage are built into every lease — one call, and we handle it.</p>
+        </div>
+        <div class="step" data-aos="fade-up" data-aos-delay="300">
+          <span class="step-num">04 / Return or renew</span>
+          <h3>Swap, extend, or hand back</h3>
+          <p>Extend the term, upgrade to a different unit, or schedule pickup — all from the same account.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INVENTORY ===== -->
+<section class="section" id="inventory">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Featured inventory</span>
+      <h2>Ready to move this week.</h2>
+      <p>A sample of what's currently in rotation. Full specs, service history, and photos are available for every unit.</p>
+    </div>
+    <div class="inv-grid">
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1751054770504-c69daeec4721?auto=format&fit=crop&w=500&q=60" alt="Mini excavator" loading="lazy" /><span class="inv-badge">Available</span></div>
+        <div class="inv-body">
+          <h3>Mini Excavator, EX-80</h3>
+          <p style="font-size:13.5px; color:var(--slate);">1,240 hrs · Tier 4 Final engine · 8ft dig depth</p>
+          <div class="inv-specs"><span>MODEL EX-80</span><span class="inv-rate">$260<span>/day</span></span></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1605678141352-ccd8c79848d9?auto=format&fit=crop&w=500&q=60" alt="Refrigerated van" loading="lazy" /><span class="inv-badge">Available</span></div>
+        <div class="inv-body">
+          <h3>Refrigerated Van, RV-9</h3>
+          <p style="font-size:13.5px; color:var(--slate);">18,200 mi · -10°F to 40°F range · 250 cu.ft</p>
+          <div class="inv-specs"><span>MODEL RV-9</span><span class="inv-rate">$135<span>/day</span></span></div>
+        </div>
+      </div>
+      <div class="inv-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="inv-media"><img src="https://images.unsplash.com/photo-1626379456424-fb1c3b588fe2?auto=format&fit=crop&w=500&q=60" alt="Telehandler" loading="lazy" /><span class="inv-badge">Available</span></div>
+        <div class="inv-body">
+          <h3>Telehandler, TH-360</h3>
+          <p style="font-size:13.5px; color:var(--slate);">980 hrs · 36ft reach · 6,000 lb capacity</p>
+          <div class="inv-specs"><span>MODEL TH-360</span><span class="inv-rate">$310<span>/day</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BENEFITS ===== -->
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Why teams stay on Ironline</span>
+      <h2>Built for operations, not one-off rentals.</h2>
+    </div>
+    <div class="benefits-media" data-aos="fade-up">
+      <img src="https://images.unsplash.com/photo-1586781383963-8e66f88077ec?auto=format&fit=crop&w=1200&q=60" alt="Logistics" loading="lazy" />
+      <span>178 depots, one account</span>
+    </div>
+    <div class="benefits">
+      <div class="benefit" data-aos="fade-up" data-aos-delay="0">
+        <span class="benefit-mark">—</span>
+        <div><h3>Flexible terms</h3><p>Lease by the day, month, or multi-year contract, and change term length without renegotiating from scratch.</p></div>
+      </div>
+      <div class="benefit" data-aos="fade-up" data-aos-delay="100">
+        <span class="benefit-mark">—</span>
+        <div><h3>Maintenance included</h3><p>Every lease carries scheduled servicing and breakdown coverage — no separate maintenance contract to manage.</p></div>
+      </div>
+      <div class="benefit" data-aos="fade-up" data-aos-delay="200">
+        <span class="benefit-mark">—</span>
+        <div><h3>Nationwide network</h3><p>178 depots mean a replacement unit is rarely more than a same-day delivery away.</p></div>
+      </div>
+      <div class="benefit" data-aos="fade-up" data-aos-delay="300">
+        <span class="benefit-mark">—</span>
+        <div><h3>Transparent pricing</h3><p>Rates are quoted up front with no mileage traps or usage penalties buried in the fine print.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Leasing plans</span>
+      <h2>Terms that match how long you actually need it.</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card" data-aos="fade-up" data-aos-delay="0">
+        <span class="plan-name">Short-Term</span>
+        <div class="plan-price">Daily<span> rate</span></div>
+        <p class="plan-desc">For single jobs, spot coverage, or trying equipment before committing longer.</p>
+        <ul class="feat-list"><li class="feat">1–29 day terms</li><li class="feat">Delivery &amp; pickup included</li><li class="feat">Swap units anytime</li><li class="feat">No credit application required</li></ul>
+        <a href="#footer" class="btn btn-outline">Get a quote</a>
+      </div>
+      <div class="price-card featured" data-aos="zoom-in" data-aos-delay="100">
+        <span class="plan-name">Seasonal</span>
+        <div class="plan-price">Monthly<span style="color:#B7BDC8;"> rate</span></div>
+        <p class="plan-desc">Built for project-length or seasonal work where needs shift month to month.</p>
+        <ul class="feat-list"><li class="feat">1–11 month terms</li><li class="feat">Priority delivery windows</li><li class="feat">Free unit upgrades on demand spikes</li><li class="feat">Dedicated account manager</li></ul>
+        <a href="#footer" class="btn btn-primary">Get a quote</a>
+      </div>
+      <div class="price-card" data-aos="fade-up" data-aos-delay="200">
+        <span class="plan-name">Long-Term Lease</span>
+        <div class="plan-price">Custom<span> rate</span></div>
+        <p class="plan-desc">For fleets you're committing to for a year or more, with rates built around volume.</p>
+        <ul class="feat-list"><li class="feat">12+ month terms</li><li class="feat">Volume-based pricing</li><li class="feat">Guaranteed replacement SLA</li><li class="feat">Buyout option at term end</li></ul>
+        <a href="#footer" class="btn btn-outline">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS + CTA ===== -->
+<section class="testi-cta">
+  <div class="wrap" style="padding-top:72px; padding-bottom:72px;">
+    <div class="testi-grid">
+      <div class="testi" data-aos="fade-up" data-aos-delay="0">
+        <blockquote>"We stopped owning depreciating equipment and started leasing exactly what each job needs. Utilization went up, and so did our margins."</blockquote>
+        <div class="testi-person"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=60" alt="" loading="lazy" /><cite>Fleet Operations Director, regional contractor</cite></div>
+      </div>
+      <div class="testi" data-aos="fade-up" data-aos-delay="100">
+        <blockquote>"A unit went down on a Friday and a replacement was on site by Saturday morning. That response time is the whole reason we stayed."</blockquote>
+        <div class="testi-person"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=100&q=60" alt="" loading="lazy" /><cite>Logistics Manager, distribution company</cite></div>
+      </div>
+      <div class="testi" data-aos="fade-up" data-aos-delay="200">
+        <blockquote>"Rates are quoted straight, no surprise mileage charges at return. Easiest vendor relationship we manage."</blockquote>
+        <div class="testi-person"><img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=100&q=60" alt="" loading="lazy" /><cite>Site Superintendent, general contractor</cite></div>
+      </div>
+    </div>
+    <div class="cta-band" data-aos="fade-up">
+      <h2>Ready to put assets to work instead of on a balance sheet?</h2>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="#inventory" class="btn btn-primary">Browse the fleet</a>
+        <a href="#footer" class="btn btn-outline on-dark">Request a quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER (no Company section, 3 columns) ===== -->
+<footer id="footer">
+  <div class="foot-inner">
+    <div class="foot-grid">
+      <!-- Brand column -->
+      <div data-aos="fade-up" data-aos-delay="0">
+        <a href="index.html" class="foot-logo">
+          <img src="./assets/logo.webp" alt="Ironline" />
+        </a>
+        <p class="foot-blurb">Rental and leasing for construction equipment, commercial vehicles, and site infrastructure — nationwide, with maintenance built in.</p>
+        <!-- Social icons → 404.html -->
+        <div class="social-links">
+          <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="404.html" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links (mirror header) -->
+      <div class="foot-col" data-aos="fade-up" data-aos-delay="100">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="fleet.html">Fleet</a>
+        <a href="#how">How it works</a>
+        <a href="#inventory">Inventory</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#footer">Contact</a>
+      </div>
+
+      <!-- Contact -->
+      <div class="foot-col" data-aos="fade-up" data-aos-delay="200">
+        <h4>Contact</h4>
+        <a href="tel:18005550148">1-800-555-0148</a>
+        <a href="404.html">stackly@ironline.com</a>
+        <a href="404.html">MMR Complex, Periyakollappatty,<br />Chinna Thirupathi, Salem,<br />Tamil Nadu 636008</a>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="foot-bottom" data-aos="fade-up">
+      <p>© 2026 STACKLY Rental &amp; Leasing. All rights reserved.</p>
+      <div class="foot-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Insurance requirements</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // AOS
+    var items = document.querySelectorAll('[data-aos]');
+    items.forEach(function(el) {
+      var delay = el.getAttribute('data-aos-delay');
+      var duration = el.getAttribute('data-aos-duration');
+      if (delay) el.style.setProperty('--aos-delay', delay + 'ms');
+      if (duration) el.style.setProperty('--aos-duration', duration + 'ms');
+    });
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('aos-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      items.forEach(function(el) { observer.observe(el); });
+    } else {
+      items.forEach(function(el) { el.classList.add('aos-in'); });
+    }
+
+    // Hamburger: fullscreen overlay
+    var toggle = document.getElementById('menuToggle');
+    var navLinks = document.getElementById('navLinks');
+    if (toggle && navLinks) {
+      function closeMenu() {
+        navLinks.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      function openMenu() {
+        navLinks.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (navLinks.classList.contains('open')) closeMenu();
+        else openMenu();
+      });
+      navLinks.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', closeMenu);
+      });
+      document.addEventListener('click', function(e) {
+        if (!navLinks.classList.contains('open')) return;
+        if (navLinks.contains(e.target) || toggle.contains(e.target)) return;
+        closeMenu();
+      });
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 840) closeMenu();
+      });
+    }
+
+    // Animated stat counters
+    var counters = document.querySelectorAll('[data-count-to]');
+    function runCounter(el) {
+      var target = parseFloat(el.getAttribute('data-count-to'));
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      var suffix = el.getAttribute('data-suffix') || '';
+      var duration = 1400;
+      var startTime = null;
+      function easeOutQuad(t) { return t * (2 - t); }
+      function step(ts) {
+        if (!startTime) startTime = ts;
+        var progress = Math.min((ts - startTime) / duration, 1);
+        var eased = easeOutQuad(progress);
+        var value = target * eased;
+        el.textContent = value.toFixed(decimals) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target.toFixed(decimals) + suffix;
+      }
+      requestAnimationFrame(step);
+    }
+    if (counters.length && 'IntersectionObserver' in window) {
+      var counterObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            runCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(function(el) { counterObserver.observe(el); });
+    } else {
+      counters.forEach(function(el) { runCounter(el); });
+    }
+  })();
+</script>
+</body>
+</html>

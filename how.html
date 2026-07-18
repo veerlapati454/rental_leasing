@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How It Works — Ironline Equipment & Vehicle Leasing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --ink: #1B2430;
+      --ink-soft: #2B3646;
+      --steel: #3D5A73;
+      --paper: #F2EFE9;
+      --paper-dim: #E8E3D8;
+      --amber: #E8A33D;
+      --amber-dim: #C6862A;
+      --slate: #6B7280;
+      --green: #4A7A5C;
+      --rust: #B0492F;
+      --line: rgba(27, 36, 48, 0.14);
+      --line-light: rgba(242, 239, 233, 0.16);
+      --display: 'Space Grotesk', sans-serif;
+      --body: 'Inter', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    h1,h2,h3,h4 { font-family: var(--display); letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber-dim); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 3px; font-weight: 600; font-size: 14.5px; cursor: pointer; border: 1px solid transparent; transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; position: relative; overflow: hidden; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--amber); color: var(--ink); }
+    .btn-primary:hover { background: var(--amber-dim); box-shadow: 0 8px 20px -6px rgba(232, 163, 61, 0.55); }
+    .btn-primary::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent); transform: skewX(-20deg); transition: left 0.6s ease; }
+    .btn-primary:hover::after { left: 130%; }
+    .btn-outline { border-color: var(--line); color: var(--ink); background: transparent; }
+    .btn-outline:hover { border-color: var(--ink); }
+    .btn-outline.on-dark { border-color: var(--line-light); color: var(--paper); }
+    .btn-outline.on-dark:hover { border-color: var(--paper); }
+
+    [data-aos] { opacity: 0; transition-property: opacity, transform; transition-duration: var(--aos-duration, 600ms); transition-delay: var(--aos-delay, 0ms); transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+    [data-aos="fade-up"] { transform: translateY(28px); }
+    [data-aos="fade-right"] { transform: translateX(-32px); }
+    [data-aos="fade-left"] { transform: translateX(32px); }
+    [data-aos="zoom-in"] { transform: scale(0.92); }
+    [data-aos].aos-in { opacity: 1; transform: translate(0, 0) scale(1); }
+    @media (prefers-reduced-motion: reduce) { [data-aos] { transition-duration: 1ms !important; transform: none !important; opacity: 1 !important; } }
+
+    /* ----- HEADER ----- */
+    header { position: sticky; top: 0; z-index: 50; background: white; border-bottom: 1px solid var(--line); animation: headerDrop 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes headerDrop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; max-width: 1180px; margin: 0 auto; position: relative; }
+    .logo { display: flex; align-items: center; cursor: pointer; }
+    .logo img { height: 54px; width: auto; display: block; transition: transform 0.25s ease; }
+    .logo:hover img { transform: rotate(-3deg) scale(1.04); }
+    .nav-links { display: flex; gap: 34px; align-items: center; }
+    .nav-links a { font-size: 14.5px; font-weight: 500; color: var(--ink-soft); position: relative; padding-bottom: 3px; }
+    .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 2px; background: var(--amber); transition: width 0.25s ease; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.current { color: var(--ink); }
+    .nav-links a.current::after { width: 100%; }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; -webkit-tap-highlight-color: transparent; z-index: 60; }
+    .menu-toggle svg rect { transition: transform 0.3s ease, opacity 0.3s ease; transform-origin: center; }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(2) { opacity: 0; }
+    .menu-toggle[aria-expanded="true"] svg rect:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 840px) {
+      .nav-cta { display: none; }
+      .menu-toggle { display: block; }
+      .nav-links { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; background: var(--paper); padding: 0 24px; margin: 0; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 55; overflow-y: auto; }
+      .nav-links.open { opacity: 1; pointer-events: auto; visibility: visible; }
+      .nav-links a { font-size: 22px; font-weight: 600; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid var(--line); color: var(--ink); transition: color 0.2s, transform 0.4s ease, opacity 0.4s ease; transform: translateY(14px); opacity: 0; }
+      .nav-links.open a { transform: translateY(0); opacity: 1; }
+      .nav-links.open a:nth-child(1) { transition-delay: 0.05s; }
+      .nav-links.open a:nth-child(2) { transition-delay: 0.1s; }
+      .nav-links.open a:nth-child(3) { transition-delay: 0.15s; }
+      .nav-links.open a:nth-child(4) { transition-delay: 0.2s; }
+      .nav-links.open a:nth-child(5) { transition-delay: 0.25s; }
+      .nav-links.open a:nth-child(6) { transition-delay: 0.3s; }
+      .nav-links.open a:nth-child(7) { transition-delay: 0.35s; }
+      .nav-links a:last-of-type { border-bottom: none; }
+      .nav-links a:hover { color: var(--amber); }
+      .mobile-only-cta { display: block; margin-top: 24px; width: auto; text-align: center; }
+      .mobile-only-cta.btn { font-size: 18px; padding: 14px 44px; }
+    }
+
+    /* ----- PAGE HERO ----- */
+    .phero { padding: 64px 0 56px; background: var(--ink); position: relative; overflow: hidden; }
+    .phero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(90deg, rgba(242,239,233,0.05) 0 1px, transparent 1px 120px);
+      pointer-events: none;
+    }
+    .phero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; position: relative; }
+    @media (max-width: 960px) { .phero-grid { grid-template-columns: 1fr; } }
+    .phero h1 { font-size: clamp(30px, 7vw, 52px); line-height: 1.08; margin: 16px 0 20px; color: #fff; }
+    .phero h1 em { font-style: normal; color: var(--amber); }
+    .phero p.sub { font-size: clamp(15px, 2.4vw, 17.5px); color: rgba(255,255,255,0.78); max-width: 480px; margin-bottom: 28px; }
+    .phero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* mini process rail in hero */
+    .rail { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line-light); border-radius: 6px; overflow: hidden; }
+    .rail-row { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--line-light); background: rgba(242,239,233,0.02); }
+    .rail-row:last-child { border-bottom: none; }
+    .rail-num { font-family: var(--mono); font-size: 13px; color: var(--amber); width: 24px; flex-shrink: 0; }
+    .rail-label { color: var(--paper); font-size: 14px; font-weight: 500; }
+    .rail-sub { font-family: var(--mono); font-size: 11px; color: #8A93A3; margin-top: 2px; }
+    .rail-arrow { margin-left: auto; color: #6B7280; font-family: var(--mono); font-size: 13px; }
+
+    /* ----- SECTIONS ----- */
+    .section { padding: 72px 0; }
+    @media (min-width: 640px) { .section { padding: 96px 0; } }
+    .section-head { max-width: 640px; margin-bottom: 44px; }
+    .section-head h2 { font-size: clamp(26px, 6vw, 38px); margin-top: 12px; }
+    .section-head p { color: var(--slate); font-size: clamp(15px, 2.4vw, 16.5px); margin-top: 14px; }
+    .section.alt { background: var(--paper-dim); }
+
+    /* ----- AT A GLANCE STRIP ----- */
+    .glance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    @media (max-width: 900px) { .glance-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .glance-grid { grid-template-columns: 1fr; } }
+    .glance-card { background: var(--paper); padding: 26px 24px; transition: background 0.15s, transform 0.25s ease; }
+    .glance-card:hover { background: #FBFAF7; transform: translateY(-4px); }
+    .glance-num { font-family: var(--mono); font-size: 12px; color: var(--amber-dim); margin-bottom: 10px; }
+    .glance-card h3 { font-size: 16px; margin-bottom: 8px; }
+    .glance-card p { font-size: 13.5px; color: var(--slate); }
+
+    /* ----- TIMELINE ----- */
+    .timeline { position: relative; }
+    .tl-spine { position: absolute; left: 27px; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+    @media (max-width: 700px) { .tl-spine { left: 21px; } }
+    .tl-item { display: grid; grid-template-columns: 56px 1fr; gap: 28px; position: relative; padding-bottom: 56px; }
+    @media (max-width: 700px) { .tl-item { grid-template-columns: 42px 1fr; gap: 18px; padding-bottom: 44px; } }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-badge { width: 56px; height: 56px; border-radius: 50%; background: var(--ink); color: var(--amber); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 15px; z-index: 1; flex-shrink: 0; transition: transform 0.3s ease, background 0.3s ease; }
+    @media (max-width: 700px) { .tl-badge { width: 42px; height: 42px; font-size: 12px; } }
+    .tl-item:hover .tl-badge { transform: scale(1.08); background: var(--amber); color: var(--ink); }
+    .tl-body { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 26px 26px 24px; transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease; }
+    @media (min-width: 640px) { .tl-body { padding: 30px 32px 28px; } }
+    .tl-item:hover .tl-body { box-shadow: 0 20px 36px -22px rgba(27,36,48,0.35); border-color: var(--amber-dim); transform: translateY(-2px); }
+    .tl-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+    .tl-body h3 { font-size: 19px; }
+    .tl-tag { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); border: 1px solid var(--line); border-radius: 20px; padding: 4px 10px; white-space: nowrap; }
+    .tl-body p { font-size: 14.5px; color: var(--slate); margin-bottom: 16px; }
+    .tl-facts { display: flex; gap: 22px; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 14px; }
+    .tl-fact { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+    .tl-fact b { color: var(--amber-dim); font-weight: 600; }
+
+    /* ----- CHECKLIST (delivery) ----- */
+    .split { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
+    @media (max-width: 900px) { .split { grid-template-columns: 1fr; gap: 32px; } }
+    .split.reverse { grid-template-columns: 1.1fr 0.9fr; }
+    @media (max-width: 900px) { .split.reverse { grid-template-columns: 1fr; } }
+    .checklist { border: 1px solid var(--line); border-radius: 6px; background: var(--paper); overflow: hidden; }
+    .check-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--line); background: var(--paper-dim); }
+    .check-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .check-status { font-family: var(--mono); font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 6px; }
+    .check-status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,122,92,0.6); } 50% { opacity: 0.35; box-shadow: 0 0 0 4px rgba(74,122,92,0); } }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+    .check-row:last-child { border-bottom: none; }
+    .check-mark { width: 18px; height: 18px; border-radius: 4px; background: var(--green); color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .check-row div h4 { font-size: 14px; margin-bottom: 3px; }
+    .check-row div p { font-size: 12.5px; color: var(--slate); }
+
+    /* ----- SERVICE TICKET (maintenance) ----- */
+    .ticket { border: 1px solid var(--line); border-radius: 6px; background: var(--ink); color: var(--paper); padding: 24px 24px 8px; }
+    @media (min-width: 640px) { .ticket { padding: 28px 28px 10px; } }
+    .ticket-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 1px solid var(--line-light); margin-bottom: 4px; gap: 12px; flex-wrap: wrap; }
+    .ticket-id { font-family: var(--mono); font-size: 11px; color: #8A93A3; }
+    .ticket-status { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; padding: 4px 9px; border-radius: 20px; background: rgba(232,163,61,0.16); color: var(--amber); white-space: nowrap; }
+    .ticket-body { padding: 16px 0; }
+    .ticket-body h3 { font-size: 18px; margin-bottom: 6px; }
+    .ticket-body p { font-size: 13.5px; color: #A9AFBB; margin-bottom: 18px; }
+    .ticket-steps { display: flex; flex-direction: column; gap: 12px; padding-bottom: 18px; }
+    .ticket-step { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .ticket-step .tstep-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
+    .ticket-step.done .tstep-dot { background: var(--green); }
+    .ticket-step span.time { margin-left: auto; font-family: var(--mono); font-size: 11px; color: #6B7280; }
+
+    /* ----- DASHBOARD MOCK (account) ----- */
+    .dash { border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: var(--paper); }
+    .dash-bar { background: var(--ink); padding: 14px 20px; display: flex; align-items: center; gap: 8px; }
+    .dash-dot-group { display: flex; gap: 6px; }
+    .dash-dot-group span { width: 9px; height: 9px; border-radius: 50%; display: block; }
+    .dash-dot-group span:nth-child(1) { background: #E08064; }
+    .dash-dot-group span:nth-child(2) { background: var(--amber); }
+    .dash-dot-group span:nth-child(3) { background: #7FBE94; }
+    .dash-url { font-family: var(--mono); font-size: 11px; color: #8A93A3; margin-left: 10px; }
+    .dash-body { padding: 22px 22px 6px; }
+    @media (min-width: 640px) { .dash-body { padding: 26px 26px 8px; } }
+    .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); gap: 10px; flex-wrap: wrap; }
+    .dash-row:last-child { border-bottom: none; }
+    .dash-asset { font-size: 13.5px; font-weight: 500; }
+    .dash-meta { font-family: var(--mono); font-size: 11px; color: var(--slate); margin-top: 2px; }
+    .dash-action { font-family: var(--mono); font-size: 11.5px; color: var(--amber-dim); border: 1px solid var(--line); border-radius: 20px; padding: 5px 12px; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+    .dash-action:hover { background: var(--ink); color: var(--paper); }
+
+    .feat-list-plain { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+    .feat-list-plain li { font-size: 14.5px; display: flex; gap: 10px; color: var(--ink-soft); }
+    .feat-list-plain li::before { content: "—"; font-family: var(--mono); color: var(--amber-dim); flex-shrink: 0; }
+
+    /* ----- FAQ ----- */
+    .faq-list { max-width: 780px; }
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-item:first-child { border-top: 1px solid var(--line); }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 4px; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: var(--display); font-size: 16.5px; color: var(--ink); }
+    .faq-q:hover { color: var(--amber-dim); }
+    .faq-icon { font-family: var(--mono); font-size: 18px; color: var(--amber-dim); flex-shrink: 0; transition: transform 0.3s ease; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1); }
+    .faq-a-inner { padding: 0 4px 22px; font-size: 14.5px; color: var(--slate); max-width: 640px; }
+
+    /* ----- CTA BAND ----- */
+    .cta-band-solo { background: var(--steel); color: var(--paper); border-radius: 6px; padding: 40px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    @media (min-width: 640px) { .cta-band-solo { padding: 52px 48px; } }
+    .cta-band-solo h2 { font-size: clamp(24px, 6vw, 34px); max-width: 480px; }
+    .cta-band-solo p { color: #DCE3E8; margin-top: 10px; font-size: 14.5px; max-width: 440px; }
+
+    /* ----- FOOTER ----- */
+    footer { background: var(--ink); color: #A9AFBB; padding: 56px 0 24px; width: 100%; }
+    @media (min-width: 640px) { footer { padding: 72px 0 28px; } }
+    .foot-inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .foot-grid { display: grid; grid-template-columns: 1.8fr 1fr 1.2fr; gap: 40px; padding-bottom: 44px; border-bottom: 1px solid var(--line-light); }
+    @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; row-gap: 36px; } }
+    @media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
+    .foot-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; cursor: pointer; }
+    .foot-logo img { height: 92px; width: auto; transition: transform 0.25s ease; }
+    .foot-logo:hover img { transform: rotate(-3deg) scale(1.04); }
+    .foot-blurb { font-size: 13.5px; line-height: 1.6; max-width: 320px; margin-bottom: 18px; }
+    .social-links { display: flex; gap: 16px; margin-top: 6px; }
+    .social-links a { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #C7CCD4; font-size: 16px; transition: background 0.2s, color 0.2s, transform 0.15s; }
+    .social-links a:hover { background: var(--amber); color: var(--ink); transform: translateY(-2px) rotate(8deg); }
+    .foot-col h4 { font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em; color: #7B8291; margin-bottom: 16px; }
+    .foot-col a { display: block; font-size: 14px; margin-bottom: 11px; color: #C7CCD4; transition: color 0.2s, transform 0.2s; }
+    .foot-col a:hover { color: var(--paper); transform: translateX(3px); }
+    .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; flex-wrap: wrap; gap: 14px; }
+    .foot-bottom p { font-size: 12.5px; color: #7B8291; }
+    .foot-legal { display: flex; gap: 20px; flex-wrap: wrap; }
+    .foot-legal a { font-size: 12.5px; color: #7B8291; transition: color 0.2s; }
+    .foot-legal a:hover { color: var(--paper); }
+
+    @media (max-width: 480px) {
+      .wrap { padding: 0 18px; }
+      .nav { padding: 12px 18px; }
+      .logo img { height: 38px; }
+      .foot-logo img { height: 38px; }
+      .btn { padding: 11px 18px; font-size: 13.5px; }
+      .foot-inner { padding: 0 18px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+      .cta-band-solo { padding: 30px 22px; }
+    }
+    @media (max-width: 360px) {
+      .wrap { padding: 0 14px; }
+      .nav { padding: 10px 14px; }
+      .foot-inner { padding: 0 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo" data-aos="fade-right" data-aos-duration="500">
+      <img src="./assets/stacly_logo1.webp" alt="Ironline" />
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="fleet.html">Fleet</a>
+      <a href="how.html" class="current">How it works</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="btn btn-primary mobile-only-cta">Login</a>
+    </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="22" height="16" viewBox="0 0 22 16">
+        <rect width="22" height="2" fill="#1B2430" />
+        <rect y="7" width="22" height="2" fill="#1B2430" />
+        <rect y="14" width="22" height="2" fill="#1B2430" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- ===== 1. PAGE HERO ===== -->
+<section class="phero">
+  <div class="wrap phero-grid">
+    <div data-aos="fade-right" data-aos-duration="700">
+      <span class="eyebrow" style="color: var(--amber);">How It Works</span>
+      <h1>Four checkpoints,<br /><em>one asset, no guesswork.</em></h1>
+      <p class="sub">Every lease on Ironline — a single skid steer or a fifty-vehicle fleet — moves through the same reserve, deliver, operate, and return cycle. Here's exactly what happens at each stage, and who's responsible for what.</p>
+      <div class="phero-actions">
+        <a href="#timeline" class="btn btn-primary">See the full process</a>
+        <a href="#faq" class="btn btn-outline on-dark">Jump to FAQ</a>
+      </div>
+    </div>
+    <div class="rail" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+      <div class="rail-row">
+        <span class="rail-num">01</span>
+        <div><div class="rail-label">Reserve</div><div class="rail-sub">Confirm rate, lock term</div></div>
+        <span class="rail-arrow">→</span>
+      </div>
+      <div class="rail-row">
+        <span class="rail-num">02</span>
+        <div><div class="rail-label">Deliver</div><div class="rail-sub">Inspected, fueled, on-site</div></div>
+        <span class="rail-arrow">→</span>
+      </div>
+      <div class="rail-row">
+        <span class="rail-num">03</span>
+        <div><div class="rail-label">Operate &amp; maintain</div><div class="rail-sub">Servicing built in</div></div>
+        <span class="rail-arrow">→</span>
+      </div>
+      <div class="rail-row">
+        <span class="rail-num">04</span>
+        <div><div class="rail-label">Renew or return</div><div class="rail-sub">Swap, extend, or hand back</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. AT A GLANCE ===== -->
+<section class="section" id="glance">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">At a glance</span>
+      <h2>What makes the process different.</h2>
+      <p>No purchase order chains, no separate maintenance vendor, no guessing at rates. These four things hold true across every lease, regardless of category or term length.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
+    <div class="glance-grid">
+      <div class="glance-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="glance-num">01</div>
+        <h3>Live availability</h3>
+        <p>Rates and inventory update continuously — what you see when you reserve is what shows up.</p>
+      </div>
+      <div class="glance-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="glance-num">02</div>
+        <h3>Delivery included</h3>
+        <p>Every asset arrives at your site or route already inspected — no pickup trip required.</p>
+      </div>
+      <div class="glance-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="glance-num">03</div>
+        <h3>Maintenance bundled</h3>
+        <p>Scheduled servicing and breakdown coverage are part of the lease, not a line item you negotiate separately.</p>
+      </div>
+      <div class="glance-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="glance-num">04</div>
+        <h3>One account, everything</h3>
+        <p>Reservations, service tickets, invoices, and renewals all live in the same dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. FULL TIMELINE ===== -->
+<section class="section alt" id="timeline">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">The process, step by step</span>
+      <h2>From reservation to return.</h2>
+      <p>The order matters here — each step depends on the one before it. This is the exact sequence your lease follows.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-spine"></div>
+
+      <div class="tl-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="tl-badge">01</div>
+        <div class="tl-body">
+          <div class="tl-top">
+            <h3>Reserve your asset</h3>
+            <span class="tl-tag">Same day</span>
+          </div>
+          <p>Search live inventory by category, location, and date range. Pricing is quoted up front — daily, weekly, or monthly — with no callback required to get a number. Confirm the term and the reservation is locked.</p>
+          <div class="tl-facts">
+            <span class="tl-fact"><b>No credit app</b> for short-term leases</span>
+            <span class="tl-fact"><b>Instant</b> rate confirmation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="tl-badge">02</div>
+        <div class="tl-body">
+          <div class="tl-top">
+            <h3>We deliver and walk you through it</h3>
+            <span class="tl-tag">48–72 hrs</span>
+          </div>
+          <p>Assets ship from the nearest of 178 depots, already inspected and fueled. For equipment, a technician runs a site walkthrough on delivery; for vehicles, keys and documentation are handed over directly.</p>
+          <div class="tl-facts">
+            <span class="tl-fact"><b>178 depots</b> nationwide</span>
+            <span class="tl-fact"><b>Same-week</b> delivery in 48 states</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="tl-badge">03</div>
+        <div class="tl-body">
+          <div class="tl-top">
+            <h3>Operate it — we maintain it</h3>
+            <span class="tl-tag">Ongoing</span>
+          </div>
+          <p>Scheduled servicing is pre-booked around your usage, and breakdown coverage means one call brings a technician or a replacement unit. You run the job; the upkeep is on us.</p>
+          <div class="tl-facts">
+            <span class="tl-fact"><b>24/7</b> field &amp; roadside support</span>
+            <span class="tl-fact"><b>98.6%</b> fleet uptime guarantee</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-aos="fade-up" data-aos-delay="0">
+        <div class="tl-badge">04</div>
+        <div class="tl-body">
+          <div class="tl-top">
+            <h3>Renew, swap, or return</h3>
+            <span class="tl-tag">Your call</span>
+          </div>
+          <p>As the term ends, extend it, upgrade to a different unit if the job's scope changed, or schedule a pickup. All three options are available from the same account, no re-negotiation from scratch.</p>
+          <div class="tl-facts">
+            <span class="tl-fact"><b>Free upgrades</b> on seasonal plans</span>
+            <span class="tl-fact"><b>Buyout option</b> on long-term leases</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. DELIVERY DEEP DIVE ===== -->
+<section class="section" id="delivery">
+  <div class="wrap split">
+    <div data-aos="fade-right" data-aos-duration="700">
+      <span class="eyebrow">Step 02, closer look</span>
+      <h2 style="font-size: clamp(24px, 5vw, 32px); margin: 12px 0 16px;">What "inspected and fueled" actually covers.</h2>
+      <p style="color: var(--slate); font-size: 15px; margin-bottom: 4px;">Every asset passes the same pre-delivery checklist before it leaves the depot, regardless of category. Nothing ships that wouldn't pass it.</p>
+      <ul class="feat-list-plain">
+        <li>Full mechanical and safety inspection within 24 hours of dispatch</li>
+        <li>Fluids, tires, and fuel topped off before loading</li>
+        <li>Digital condition report photographed and attached to your account</li>
+        <li>On-site or curbside walkthrough at drop-off, no extra charge</li>
+      </ul>
+    </div>
+    <div class="checklist" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+      <div class="check-head">
+        <span class="check-title">Pre-Delivery Checklist · SSL-220</span>
+        <span class="check-status"><span class="dot"></span>Cleared</span>
+      </div>
+      <div class="check-row">
+        <span class="check-mark">✓</span>
+        <div><h4>Mechanical inspection</h4><p>Hydraulics, undercarriage, and hour meter verified</p></div>
+      </div>
+      <div class="check-row">
+        <span class="check-mark">✓</span>
+        <div><h4>Fluids &amp; fuel</h4><p>Topped off, no leaks detected</p></div>
+      </div>
+      <div class="check-row">
+        <span class="check-mark">✓</span>
+        <div><h4>Safety systems</h4><p>Lights, backup alarm, and ROPS confirmed</p></div>
+      </div>
+      <div class="check-row">
+        <span class="check-mark">✓</span>
+        <div><h4>Condition report</h4><p>Photos attached to your account dashboard</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. MAINTENANCE DEEP DIVE ===== -->
+<section class="section alt" id="maintenance">
+  <div class="wrap split reverse">
+    <div class="ticket" data-aos="fade-right" data-aos-duration="700">
+      <div class="ticket-head">
+        <span class="ticket-id">TICKET #IL-48291 · Boom Lift AB-45</span>
+        <span class="ticket-status">In Progress</span>
+      </div>
+      <div class="ticket-body">
+        <h3>Hydraulic pressure warning</h3>
+        <p>Reported by operator via account dashboard, 7:42 AM local. Technician dispatched from nearest depot.</p>
+        <div class="ticket-steps">
+          <div class="ticket-step done"><span class="tstep-dot"></span>Ticket received &amp; triaged<span class="time">7:44 AM</span></div>
+          <div class="ticket-step done"><span class="tstep-dot"></span>Technician dispatched<span class="time">7:51 AM</span></div>
+          <div class="ticket-step"><span class="tstep-dot"></span>On-site diagnostic<span class="time">Est. 9:30 AM</span></div>
+          <div class="ticket-step"><span class="tstep-dot"></span>Replacement unit on standby<span class="time">If needed</span></div>
+        </div>
+      </div>
+    </div>
+    <div data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+      <span class="eyebrow">Step 03, closer look</span>
+      <h2 style="font-size: clamp(24px, 5vw, 32px); margin: 12px 0 16px;">One call, not a maintenance contract to manage.</h2>
+      <p style="color: var(--slate); font-size: 15px; margin-bottom: 4px;">Report an issue from the dashboard or by phone. A technician is dispatched from the nearest of 178 depots, and if the fix can't happen on-site same-day, a replacement unit is queued automatically — no separate approval needed.</p>
+      <ul class="feat-list-plain">
+        <li>Scheduled servicing pre-booked around your usage hours or mileage</li>
+        <li>Breakdown coverage included in every lease, no add-on fee</li>
+        <li>Replacement units dispatched same-day when repair can't happen on-site</li>
+        <li>Full service history logged to your account automatically</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. ACCOUNT / RENEW DEEP DIVE ===== -->
+<section class="section" id="account">
+  <div class="wrap split">
+    <div data-aos="fade-right" data-aos-duration="700">
+      <span class="eyebrow">Step 04, closer look</span>
+      <h2 style="font-size: clamp(24px, 5vw, 32px); margin: 12px 0 16px;">Renewing takes fewer clicks than the first reservation.</h2>
+      <p style="color: var(--slate); font-size: 15px; margin-bottom: 4px;">Every active and past lease lives in one dashboard. As a term approaches its end, extend it, swap to a different unit if the scope of work changed, or schedule a pickup — without starting a new contract from zero.</p>
+      <ul class="feat-list-plain">
+        <li>Renewal reminders sent automatically before term end</li>
+        <li>Swap requests routed to the nearest depot with matching inventory</li>
+        <li>Pickup scheduling handled from the same screen as the reservation</li>
+        <li>Invoices, condition reports, and service history archived per asset</li>
+      </ul>
+    </div>
+    <div class="dash" data-aos="fade-left" data-aos-duration="700" data-aos-delay="150">
+      <div class="dash-bar">
+        <div class="dash-dot-group"><span></span><span></span><span></span></div>
+        <span class="dash-url">account.ironline.com/leases</span>
+      </div>
+      <div class="dash-body">
+        <div class="dash-row">
+          <div><div class="dash-asset">Mobile Office Trailer, 32ft</div><div class="dash-meta">Term ends in 6 days</div></div>
+          <a href="#" class="dash-action">Renew</a>
+        </div>
+        <div class="dash-row">
+          <div><div class="dash-asset">Cargo Van, Transit 250</div><div class="dash-meta">Term ends in 22 days</div></div>
+          <a href="#" class="dash-action">Swap</a>
+        </div>
+        <div class="dash-row">
+          <div><div class="dash-asset">Telehandler, TH-360</div><div class="dash-meta">Term ends in 41 days</div></div>
+          <a href="#" class="dash-action">Manage</a>
+        </div>
+        <div class="dash-row">
+          <div><div class="dash-asset">Mini Excavator, EX-80</div><div class="dash-meta">Return scheduled 7/29</div></div>
+          <a href="#" class="dash-action">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. FAQ ===== -->
+<section class="section alt" id="faq">
+  <div class="wrap">
+    <div class="section-head" data-aos="fade-up">
+      <span class="eyebrow">Common questions</span>
+      <h2>Before you reserve.</h2>
+      <p>The questions that come up most before a first lease. Reach out if yours isn't covered here.</p>
+    </div>
+
+    <div class="faq-list" data-aos="fade-up">
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>How fast can an asset actually arrive?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Most reservations deliver within 48–72 hours from the nearest depot. Same-week delivery is standard across 48 states, and some categories in high-density regions can arrive next-day.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Is maintenance really included, or is it an upsell?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">It's built into every lease at no extra cost — scheduled servicing and breakdown coverage are part of the base rate, not a separate contract or line item you have to opt into.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>What happens if an asset breaks down mid-lease?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Report it from the dashboard or by phone and a technician is dispatched from the nearest depot. If it can't be fixed on-site the same day, a replacement unit is queued automatically — no separate approval process.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Can I switch a short-term lease to a longer one later?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Terms can be extended or converted to a seasonal or long-term plan directly from your account at any point before the current term ends, and pricing adjusts to the new term automatically.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Do I need a credit application to get started?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Short-term leases (1–29 days) don't require a credit application. Seasonal and long-term leases go through a brief credit review as part of the quote process.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>What if I need to return an asset early?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Schedule an early pickup from your account dashboard at any time. Short-term leases can typically be returned with no penalty; seasonal and long-term terms are reviewed case by case with your account manager.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. CTA BAND ===== -->
+<section class="section">
+  <div class="wrap">
+    <div class="cta-band-solo" data-aos="fade-up">
+      <div>
+        <h2>Ready to see it run on your first job?</h2>
+        <p>Browse live inventory or talk to a specialist about matching a term to your project.</p>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="inventory.html" class="btn btn-primary">Browse the fleet</a>
+        <a href="#footer" class="btn btn-outline on-dark">Talk to a specialist</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer id="footer">
+  <div class="foot-inner">
+    <div class="foot-grid">
+      <div data-aos="fade-up" data-aos-delay="0">
+        <a href="index.html" class="foot-logo">
+          <img src="./assets/logo.webp" alt="Ironline" />
+        </a>
+        <p class="foot-blurb">Rental and leasing for construction equipment, commercial vehicles, and site infrastructure — nationwide, with maintenance built in.</p>
+        <div class="social-links">
+          <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="404.html" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="foot-col" data-aos="fade-up" data-aos-delay="100">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="fleet.html">Fleet</a>
+        <a href="how.html">How it works</a>
+        <a href="inventory.html">Inventory</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="#footer">Contact</a>
+      </div>
+
+      <div class="foot-col" data-aos="fade-up" data-aos-delay="200">
+        <h4>Contact</h4>
+        <a href="tel:18005550148">1-800-555-0148</a>
+        <a href="404.html">stackly@ironline.com</a>
+        <a href="404.html">MMR Complex, Periyakollappatty,<br />Chinna Thirupathi, Salem,<br />Tamil Nadu 636008</a>
+      </div>
+    </div>
+
+    <div class="foot-bottom" data-aos="fade-up">
+      <p>© 2026 STACKLY Rental &amp; Leasing. All rights reserved.</p>
+      <div class="foot-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Insurance requirements</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // AOS
+    var items = document.querySelectorAll('[data-aos]');
+    items.forEach(function(el) {
+      var delay = el.getAttribute('data-aos-delay');
+      var duration = el.getAttribute('data-aos-duration');
+      if (delay) el.style.setProperty('--aos-delay', delay + 'ms');
+      if (duration) el.style.setProperty('--aos-duration', duration + 'ms');
+    });
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('aos-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      items.forEach(function(el) { observer.observe(el); });
+    } else {
+      items.forEach(function(el) { el.classList.add('aos-in'); });
+    }
+
+    // Hamburger
+    var toggle = document.getElementById('menuToggle');
+    var navLinks = document.getElementById('navLinks');
+    if (toggle && navLinks) {
+      function closeMenu() { navLinks.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }
+      function openMenu() { navLinks.classList.add('open'); toggle.setAttribute('aria-expanded', 'true'); }
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (navLinks.classList.contains('open')) closeMenu(); else openMenu();
+      });
+      navLinks.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+      document.addEventListener('click', function(e) {
+        if (!navLinks.classList.contains('open')) return;
+        if (navLinks.contains(e.target) || toggle.contains(e.target)) return;
+        closeMenu();
+      });
+      window.addEventListener('resize', function() { if (window.innerWidth > 840) closeMenu(); });
+    }
+
+    // FAQ accordion
+    var faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(function(item) {
+      var q = item.querySelector('.faq-q');
+      var a = item.querySelector('.faq-a');
+      q.addEventListener('click', function() {
+        var isOpen = item.classList.contains('open');
+        faqItems.forEach(function(other) {
+          other.classList.remove('open');
+          other.querySelector('.faq-a').style.maxHeight = null;
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          a.style.maxHeight = a.scrollHeight + 'px';
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
