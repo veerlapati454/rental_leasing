@@ -35,11 +35,12 @@
       color: var(--ink);
       min-height: 100vh;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       padding: 20px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     /* --- Animated white-theme background --- */
@@ -122,7 +123,7 @@
     h1,h2,h3,h4 { font-family: var(--display); letter-spacing: -0.01em; }
     a { color: inherit; }
 
-    .login-wrapper { width: 100%; max-width: 440px; position: relative; z-index: 1; }
+    .login-wrapper { width: 100%; max-width: 440px; position: relative; z-index: 1; margin: 20px 0; }
 
     .back-home {
       display: inline-flex;
