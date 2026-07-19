@@ -193,7 +193,7 @@
     .hero-banner {
       position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 20px;
       border: 1px solid var(--border); min-height: 150px; display: flex; align-items: center;
-      background: linear-gradient(120deg, rgba(10,13,18,.92), rgba(10,13,18,.55)), url('https://picsum.photos/seed/fleethero/1400/400') center/cover;
+      background: linear-gradient(120deg, rgba(10,13,18,.92), rgba(10,13,18,.75));
     }
     .hero-banner-inner { padding: 26px 30px; max-width: 560px; }
     .hero-eyebrow { font-family:var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
@@ -507,15 +507,6 @@
     { name: "C. Whitfield", role: "Ops Lead — Global", experience: 9, avatar: "CW", status: "active", projects: 4, speciality: "Telematics & Fleet Tracking", email: "c.whitfield@meridianfleet.com" }
   ];
 
-  const fleetCatalog = [
-    { id: "VEH-001", name: "Ford Transit 350 Cargo Van", facility: "chicago", category: "Van", date: "Jan 2026", stock: "Excellent", status: "Bestseller", img: "https://picsum.photos/seed/transitvan/400/300" },
-    { id: "VEH-002", name: "CAT 320 Excavator", facility: "denver", category: "Excavator", date: "Jun 2025", stock: "Good", status: "Active", img: "https://picsum.photos/seed/excavator320/400/300" },
-    { id: "VEH-003", name: "Toyota Camry Sedan", facility: "miami", category: "Sedan", date: "Mar 2025", stock: "Low", status: "Active", img: "https://picsum.photos/seed/camrysedan/400/300" },
-    { id: "VEH-004", name: "Toyota Forklift 8FGU25", facility: "austin", category: "Forklift", date: "Sep 2025", stock: "Excellent", status: "Bestseller", img: "https://picsum.photos/seed/forkliftwh/400/300" },
-    { id: "VEH-005", name: "Hino 26ft Box Truck", facility: "seattle", category: "Box Truck", date: "Nov 2025", stock: "Good", status: "Active", img: "https://picsum.photos/seed/boxtruck26/400/300" },
-    { id: "VEH-006", name: "Chevrolet Suburban SUV", facility: "chicago", category: "SUV", date: "Feb 2026", stock: "Excellent", status: "New", img: "https://picsum.photos/seed/suburbansuv/400/300" }
-  ];
-
   const fleetReports = [
     { title: "Fleet Utilization Benchmark — Q2", authors: "Alvarez, J. et al.", journal: "Ops Analytics 2026", year: 2026, status: "Published", reads: 34 },
     { title: "Equipment Downtime Reduction Study", authors: "Brennan, K., Osei, D.", journal: "Field Report 2026", year: 2026, status: "Published", reads: 18 },
@@ -555,7 +546,6 @@
   const navItems = [
     { icon: "◈", label: "Dashboard", id: "dashboard" },
     { icon: "⊞", label: "Active Leases", id: "runs" },
-    { icon: "⊚", label: "Fleet Catalog", id: "products" },
     { icon: "▤", label: "Fleet Team", id: "teams" },
     { icon: "◉", label: "Fleet Reports", id: "reports" },
     { icon: "◷", label: "Schedule", id: "schedule" },
@@ -564,7 +554,6 @@
   ];
 
   const statusColors = { "Active": "status-active", "Ramping Up": "status-field", "Completed": "status-complete", "Review": "status-review" };
-  const stockColor = { "Excellent": "#4A7A5C", "Good": "#C6862A", "Low": "#B0492F" };
   const reportStatusColor = { "Published": "#4A7A5C", "In Review": "#C6862A", "In Draft": "#6B7280" };
   const scheduleTypeColor = { urgent: "#B0492F", normal: "#C6862A", meeting: "#6B7280" };
 
@@ -572,7 +561,6 @@
     dashboard: { title: "Dashboard", sub: "Vehicle & equipment leasing · fleet ops · branch analytics" },
     runs:      { title: "Active Leases", sub: "Vehicle and equipment leases in progress" },
     teams:     { title: "Fleet Team", sub: "Leasing agents & fleet managers" },
-    products:  { title: "Fleet Catalog", sub: "Vehicles & equipment available to lease" },
     reports:   { title: "Fleet Reports", sub: "Utilization studies and performance briefs" },
     schedule:  { title: "Schedule", sub: "Inspections, pickups, and reviews" },
     budget:    { title: "Budget", sub: "Lease spend by branch" },
@@ -582,7 +570,6 @@
   let state = {
     activeNav: "dashboard",
     runFilter: "All",
-    productSearch: "",
     settings: { notifications: true, emailDigest: false, darkMode: true, language: "English" }
   };
 
@@ -818,52 +805,6 @@
     `;
   }
 
-  function renderProducts() {
-    const q = state.productSearch.toLowerCase();
-    const filtered = fleetCatalog.filter(a => a.name.toLowerCase().includes(q) || a.facility.toLowerCase().includes(q));
-    const stats = [
-      { icon: "⊚", value: "2,847", label: "Total Fleet Assets", bar: 75, accent: true },
-      { icon: "◉", value: "142", label: "In Inspection", bar: 55 },
-      { icon: "◈", value: "89", label: "Featured Listings", bar: 30 },
-      { icon: "▤", value: "34", label: "Awaiting Servicing", bar: 20 }
-    ];
-    const statsHtml = stats.map((s, i) =>
-      `<div class="stat-card ${s.accent ? "stat-accent" : ""}" data-aos="fade-up" data-aos-delay="${i * 60}" onclick="go404()">
-        <div class="stat-top"><span class="stat-icon">${s.icon}</span></div>
-        <div class="stat-value">${s.value}</div><div class="stat-label">${s.label}</div>
-        <div class="stat-bar"><div class="stat-bar-fill" data-w="${s.bar}"></div></div>
-      </div>`
-    ).join("");
-
-    const badgeBg = { "Bestseller": "rgba(232,163,61,0.18)", "Active": "rgba(74,122,92,0.12)", "New": "rgba(232,163,61,0.18)", "Retired": "rgba(107,114,128,0.15)" };
-    const badgeColor = { "Bestseller": "#C6862A", "Active": "#3F6B4C", "New": "#C6862A", "Retired": "#6B7280" };
-
-    const cards = filtered.map((a, i) =>
-      `<div class="pub-card" data-aos="fade-up" data-aos-delay="${i * 40}" onclick="go404()">
-        <img class="catalog-thumb" src="${a.img}" alt="${a.name}" loading="lazy">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px">
-          <div style="font-family:var(--mono);font-size:11px;color:var(--text-dimmer)">${a.id}</div>
-          <span class="status-badge" style="background:${badgeBg[a.status]};color:${badgeColor[a.status]}">${a.status}</span>
-        </div>
-        <div class="t-name" style="font-size:14px;margin-bottom:2px">${a.name}</div>
-        <div class="t-sub" style="margin-bottom:10px">${branchName[a.facility]} · ${a.category}</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-dim)">
-          <span>Added ${a.date}</span>
-          <span style="color:${stockColor[a.stock]};font-weight:700">${a.stock}</span>
-        </div>
-      </div>`
-    ).join("");
-
-    return `
-      <section class="stats-grid">${statsHtml}</section>
-      <div class="card" data-aos="fade-up" data-aos-delay="100">
-        <div class="card-header"><div><h2 class="card-title">Fleet Catalog</h2><p class="card-sub">Vehicles & equipment available to lease</p></div>
-        <div class="search-box" style="flex:0 0 auto"><span class="search-icon">🔍</span><input id="product-search-input" placeholder="Search fleet…" value="${state.productSearch}"></div></div>
-        <div class="pub-grid">${cards}</div>
-      </div>
-    `;
-  }
-
   function renderReports() {
     const stats = [
       { icon: "◉", value: fleetReports.length, label: "Total Reports", bar: 80, accent: true },
@@ -1032,7 +973,6 @@
     dashboard: renderDashboard,
     runs: renderRuns,
     teams: renderTeams,
-    products: renderProducts,
     reports: renderReports,
     schedule: renderSchedule,
     budget: renderBudget,
@@ -1041,8 +981,8 @@
 
   // ─── NAVIGATION ───
   function renderNav() {
-    const mainItems = navItems.slice(0, 3);
-    const mgmtItems = navItems.slice(3);
+    const mainItems = navItems.slice(0, 2);
+    const mgmtItems = navItems.slice(2);
     function itemHtml(item) {
       const badge = item.id === "runs" ? `<span class="nav-badge">${leaseContracts.length}</span>` : "";
       return `<button class="nav-item ${state.activeNav === item.id ? "nav-active" : ""}" data-nav="${item.id}">
@@ -1108,16 +1048,6 @@
       state.settings[key] = !state.settings[key];
       renderPage();
       return;
-    }
-  });
-
-  document.addEventListener("input", function(e) {
-    if (e.target && e.target.id === "product-search-input") {
-      state.productSearch = e.target.value;
-      const caretPos = e.target.selectionStart;
-      renderPage();
-      const input = document.getElementById("product-search-input");
-      if (input) { input.focus(); input.setSelectionRange(caretPos, caretPos); }
     }
   });
 
