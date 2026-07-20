@@ -28,7 +28,8 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    html, body { max-width: 100%; overflow-x: clip; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
     h1,h2,h3,h4 { font-family: var(--display); letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
@@ -87,7 +88,7 @@
     @media (max-width: 840px) {
       .nav-cta { display: none; }
       .menu-toggle { display: block; }
-      .nav-links { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; background: var(--paper); padding: 0 24px; margin: 0; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 55; overflow-y: auto; }
+      .nav-links { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: var(--paper); padding: 0 24px; margin: 0; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 55; overflow-y: auto; overflow-x: hidden; }
       .nav-links.open { opacity: 1; pointer-events: auto; visibility: visible; }
       .nav-links a { font-size: 22px; font-weight: 600; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid var(--line); color: var(--ink); transition: color 0.2s, transform 0.4s ease, opacity 0.4s ease; transform: translateY(14px); opacity: 0; }
       .nav-links.open a { transform: translateY(0); opacity: 1; }
@@ -194,7 +195,7 @@
     .ticket-body h3 { font-size: 18px; margin-bottom: 6px; }
     .ticket-body p { font-size: 13.5px; color: #A9AFBB; margin-bottom: 18px; }
     .ticket-steps { display: flex; flex-direction: column; gap: 12px; padding-bottom: 18px; }
-    .ticket-step { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .ticket-step { display: flex; align-items: center; gap: 12px; font-size: 13px; flex-wrap: wrap; }
     .ticket-step .tstep-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
     .ticket-step.done .tstep-dot { background: var(--green); }
     .ticket-step span.time { margin-left: auto; font-family: var(--mono); font-size: 11px; color: #6B7280; }
@@ -663,12 +664,12 @@
         <a href="how.html">How it works</a>
         <a href="inventory.html">Inventory</a>
         <a href="pricing.html">Pricing</a>
-        <a href="#footer">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
 
       <div class="foot-col" data-aos="fade-up" data-aos-delay="200">
         <h4>Contact</h4>
-        <a href="tel:18005550148">1-800-555-0148</a>
+        <a href="404.html">1-800-555-0148</a>
         <a href="404.html">stackly@ironline.com</a>
         <a href="404.html">MMR Complex, Periyakollappatty,<br />Chinna Thirupathi, Salem,<br />Tamil Nadu 636008</a>
       </div>
